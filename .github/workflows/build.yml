@@ -1,0 +1,34 @@
+name: Build
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+
+jobs:
+  build:
+    name: Page Build
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.10"
+          cache: pipenv
+      - name: Install Python dependencies
+        run: |
+          curl https://raw.githubusercontent.com/pypa/pipenv/master/get-pipenv.py | python3
+          pipenv install
+      - name: Page Build
+        run: |
+          ./scripts/pre-build/pre-build.sh
+          pipenv run mkdocs build -v
+      - name: Deploy
+        if: ${{ github.event_name == 'push' }}
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./site
+          force_orphan: true
