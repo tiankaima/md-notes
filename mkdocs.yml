@@ -1,8 +1,8 @@
 # Project Information
-site_name: Note/Tiankai Ma
-site_description: "Tiankai Ma's notes"
+site_name: Notes/Tiankai Ma
+site_description: "Tiankai Ma's Notes"
 site_author: "Tiankai Ma"
-site_url: https://tiankaima.dev
+site_url: https://notes.tiankaima.dev
 strict: false
 
 # Repository
@@ -67,12 +67,7 @@ extra:
   githash: ""
 
 extra_javascript:
-  - "_static/js/math-csr.js?math-csr"
   - "assets/vendor/mathjax/es5/tex-mml-chtml.js?math-csr"
-
-extra_css:
-  - "_static/css/extra.css?v=14"
-  # - '_static/css/offset-inject-debug.css'
 
 # Extensions
 markdown_extensions:
@@ -83,7 +78,7 @@ markdown_extensions:
   - footnotes
   - meta
   - toc:
-      permalink: ""
+      permalink: true
       slugify: !!python/name:pymdownx.slugs.uslugify
   - pymdownx.arithmatex:
       generic: true
@@ -94,6 +89,7 @@ markdown_extensions:
       emoji_generator: !!python/name:pymdownx.emoji.to_svg
   - pymdownx.highlight:
       linenums: true
+      anchor_linenums: true
   - pymdownx.inlinehilite
   - pymdownx.keys
   - pymdownx.magiclink
@@ -107,8 +103,16 @@ markdown_extensions:
         - name: math
           class: arithmatex
           format: !!python/name:pymdownx.arithmatex.fence_mathjax_format
+        - name: mermaid
+          class: mermaid
+          format: !!python/name:pymdownx.superfences.fence_code_format
   - pymdownx.tasklist:
       custom_checkbox: true
   - pymdownx.tilde
   - pymdownx.tabbed:
       alternate_style: true
+  - attr_list
+  - markdown.extensions.def_list
+  - md_in_html
+  - toc:
+      permalink: true
