@@ -15,6 +15,16 @@ def f(x):
     return x**2
 ```
 
+Mermaid diagram:
+
+```mermaid
+graph TD;
+    A-->B;
+    A-->C;
+    B-->D;
+    C-->D;
+```
+
 ## link ref test {#link-ref-test-k}
 
 [Link to another page](./another-page)
