@@ -17,6 +17,11 @@ nav:
   - 简介:
       - Getting Started: index.md
       - About: intro/about.md
+  - Blog:
+      - Modern C++: blog/modern-cpp.md
+      - Schoolwork Links: blog/schoolwork-links.md
+      - Typst Tutorial for Latex User: blog/typst-tutorial-for-latex-user.md
+      - USTC Websites: blog/ustc-websites.md
 
 # Theme
 theme:
