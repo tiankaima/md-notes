@@ -43,7 +43,7 @@ theme:
     # Palette toggle for dark mode
     - media: "(prefers-color-scheme: dark)"
       scheme: slate
-      primary: blue
+      primary: black
       accent: blue
       toggle:
         icon: material/weather-night
@@ -60,7 +60,8 @@ theme:
     text: "Fira Sans"
     code: "Fira Mono"
 
-plugins: []
+plugins:
+  - git-revision-date-localized
 
 # Customization
 extra:

@@ -11,6 +11,7 @@ beautifulsoup4 = "*"
 requests = "*"
 python-markdown-document-offsets-injection-extension = "==0.1.0"
 markdown = "==3.6"
+mkdocs-git-revision-date-localized-plugin = "*"
 
 [dev-packages]
 
