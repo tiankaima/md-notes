@@ -1,30 +1,9 @@
-# Index
+# Welcome
 
-Test some markdown functionality:
+A GitHub Pages Hosted Blog site.
 
-$$
-\begin{align*}
-\text{Einstein's equation:} && R_{\mu\nu} - \frac{1}{2}g_{\mu\nu}R + g_{\mu\nu}\Lambda &= \frac{8\pi G}{c^4}T_{\mu\nu} \\
-\end{align*}
-$$
+-   [GitHub Link](https://github.com/tiankaima/md-notes)
+-   [Features Test](./index/test.md)
+-   [About me](./index/about.md)
 
-Code:
-
-```python
-def f(x):
-    return x**2
-```
-
-Mermaid diagram:
-
-```mermaid
-graph TD;
-    A-->B;
-    A-->C;
-    B-->D;
-    C-->D;
-```
-
-## link ref test {#link-ref-test-k}
-
-[Link to another page](./another-page)
+Most content is in Chinese, English contents are marked with `[EN]` in the title.
