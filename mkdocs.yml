@@ -23,6 +23,10 @@ nav:
       - Schoolwork Links: blog/schoolwork-links.md
       - Typst Tutorial for Latex User: blog/typst-tutorial-for-latex-user.md
       - USTC Websites: blog/ustc-websites.md
+      - XZKD New Tokens: blog/xzkd-new-tokens.md
+  - Math:
+      - Analysis:
+          - Calculus: math/analysis/calculus.md
 
 # Theme
 theme:
@@ -63,6 +67,7 @@ theme:
 
 plugins:
   - git-revision-date-localized
+  - glightbox
 
 # Customization
 extra:

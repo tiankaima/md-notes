@@ -1,7 +1,7 @@
 {
     "_meta": {
         "hash": {
-            "sha256": "e0f007010b585c2d6715334929a1c14154e680590a0483fdc9fb9612b5448b7d"
+            "sha256": "3b93056d30ae967e61eb2f09bea06165748bd1e9d233ef1bfc1bf59bc2c71f1f"
         },
         "pipfile-spec": 6,
         "requires": {
@@ -284,6 +284,14 @@
             "index": "pypi",
             "markers": "python_version >= '3.8'",
             "version": "==1.2.6"
+        },
+        "mkdocs-glightbox": {
+            "hashes": [
+                "sha256:392b34207bf95991071a16d5f8916d1d2f2cd5d5bb59ae2997485ccd778c70d9",
+                "sha256:e0107beee75d3eb7380ac06ea2d6eac94c999eaa49f8c3cbab0e7be2ac006ccf"
+            ],
+            "index": "pypi",
+            "version": "==0.4.0"
         },
         "packaging": {
             "hashes": [
