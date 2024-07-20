@@ -14,19 +14,23 @@ copyright: "Copyright &copy; Tiankai Ma"
 
 # Contents
 nav:
-  - Index:
+  - Welcome:
       - Welcome [EN]: index.md
       - About [EN]: index/about.md
       - Test Page: index/test.md
   - Blog:
-      - Modern C++: blog/modern-cpp.md
-      - Schoolwork Links: blog/schoolwork-links.md
-      - Typst Tutorial for Latex User: blog/typst-tutorial-for-latex-user.md
-      - USTC Websites: blog/ustc-websites.md
-      - XZKD New Tokens: blog/xzkd-new-tokens.md
+      - blog/modern-cpp.md
+      - blog/schoolwork-links.md
+      - blog/typst-tutorial-for-latex-user.md
+      - blog/ustc-websites.md
+      - blog/xzkd-new-tokens.md
   - Math:
+      - math/index.md
       - Analysis:
-          - Calculus: math/analysis/calculus.md
+        - math/analysis/calculus.md
+      - Probability:
+        - math/probability/probability.md
+        - math/probability/stochastic-processes.md
 
 # Theme
 theme:
@@ -60,6 +64,7 @@ theme:
     logo: "material/school"
   features:
     - content.action.edit
+    - navigation.expand
     - navigation.tabs
   font:
     text: "Fira Sans"

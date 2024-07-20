@@ -1,14 +1,19 @@
 # 数学分析 (B1) & (B2)
 
-!!! notes
+!!! note
 
     在 [USTC](https://ustc.edu.cn) 的入门分析学课程有两种授课方式：
 
     -   数学分析 (A1) & (A2) & (A3): 面向数学学院开设的课程
     -   数学分析 (B1) & (B2) & (B3): 面向校内其他学生开设，其中 (B3) 只面向转到数学学院的学生开设，用来补齐进度。
 
-    这里记录的是我担任助教的两门课程 **数学分析 (B1) [2023 Fall]** && **数学分析 (B2) [2024 Spring]** 的教学、习题课内容。
+    [Alist/Teaching/数学分析](https://alist.tiankaima.cn/Teaching/%E6%95%B0%E5%AD%A6%E5%88%86%E6%9E%90) 存放着我担任助教的两门课程 **数学分析 (B1) [2023 Fall]** && **数学分析 (B2) [2024 Spring]** 的教学、习题课内容。
 
-!!! comment
+!!! note
 
-    大部分文件存放在 [Alist/Teaching/数学分析](https://alist.tiankaima.cn/Teaching/%E6%95%B0%E5%AD%A6%E5%88%86%E6%9E%90)
+    另外我在维护两位学长[^1][^2] 整理的「数学分析 (B) 历年考试真题」. 项目地址在 <https://git.lug.ustc.edu.cn/tiankaima/maexams> (**需要登录** USTC 统一身份认证).
+
+    我协助整理了 2022 秋 - 2024 春 4 个学期、共 8 套试题, 微调了部分排版和编译过程. 鉴于我没有再带数学分析助教的时间, 我期待学弟学妹接手这个项目, 如有兴趣可以联系我.
+
+[^1]: 吴天 <http://home.ustc.edu.cn/~wt1997/>
+[^2]: 余启帆 <http://home.ustc.edu.cn/~qifan/>
