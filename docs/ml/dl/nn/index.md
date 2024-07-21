@@ -1,4 +1,4 @@
-# NN 神经网络
+# Neural Network 神经网络
 
 ## 概念 {#concepts}
 
@@ -45,11 +45,13 @@
     f(x) = \frac{e^x - e^{-x}}{e^x + e^{-x}}
     $$
 
-    -   **作为 Sigmoid 的替代，效果更好**
     -   输出范围：$(-1, 1)$
-    -   $E[f(x)] = 0$, 收敛速度更快[^fast-convergence]
+    -   **作为 Sigmoid 的替代，效果更好 [^tanh-better-than-sigmoid]**
 
-        [^fast-convergence]: [Why is tanh always better than sigmoid function in neural networks?](https://stats.stackexchange.com/questions/330559/why-is-tanh-always-better-than-sigmoid-function-in-neural-networks)
+        -   $E[f(x)] = 0$, 收敛速度更快 (存疑)
+        -   多数情况下给出的梯度更大，收敛速度更快
+
+        [^tanh-better-than-sigmoid]: [Why is tanh always better than sigmoid function in neural networks?](https://stats.stackexchange.com/questions/330559/why-is-tanh-always-better-than-sigmoid-function-in-neural-networks)
 
 -   ReLU (1)
     { .annotate }
@@ -77,19 +79,17 @@
     $$
 
     -   输出范围：$(-\infty, +\infty)$
-    -   修正了 ReLU 的死亡问题 [^leaky-relu]
-
-        [^leaky-relu]: [What is the Leaky ReLU for?](https://datascience.stackexchange.com/questions/5706/what-is-the-dying-relu-problem-in-neural-networks)
+    -   修正了 ReLU 的死亡问题 [^dying-relu]
 
 -   Softmax
 
     $$
-    f(x_i) = \frac{e^{x_i}}{\sum_{j=1}^{n} e^{x_j}}
+    \mathbf{f}_i(\mathbf{x}) = \frac{e^{x_i}}{\sum_{j=1}^{n} e^{x_j}}
     $$
 
     -   用于多分类问题的输出层 [^softmax]
 
-        [^softmax]: [What is the difference between softmax and sigmoid function?](https://stats.stackexchange.com/questions/233658/what-is-the-difference-between-softmax-and-sigmoid-function)
+        [^softmax]: [Softmax vs Sigmoid function in logistic classifier](https://stats.stackexchange.com/questions/233658/softmax-vs-sigmoid-function-in-logistic-classifier)
 
     -   输出范围：\((0, 1)\)
     -   所有输出的和为 $1$
@@ -110,32 +110,32 @@
             $$
             \frac{e^{x_i - c}}{\sum_{j=1}^{n} e^{x_j - c}} = \frac{e^{x_i}}{\sum_{j=1}^{n} e^{x_j}}
             $$
-        - 梯度计算： $i\neq j$
+        - 梯度计算： $(i\neq j)$
 
             $$
             \begin{aligned}
-            &\nabla_{x_i} f(x_i) = f(x_i)(1 - f(x_i)) \\
-            &\nabla_{x_i} f(x_j) = -f(x_i)f(x_j)
+            &\nabla_{x_i} \mathbf{f}_i(x) = \mathbf{f}_i(x)(1 - \mathbf{f}_i(x)) \\
+            &\nabla_{x_j} \mathbf{f}_i(x) = -\mathbf{f}_i(x) \mathbf{f}_j(x)
             \end{aligned}
             $$
 
-            也就是：$\nabla_{x_j} f(x_i) = f(x_i)(\delta_{ij} - f(x_j))$
+            也就是：$\nabla_{x_j} \mathbf{f}_i(\mathbf{x}) = \mathbf{f}_i(\mathbf{x})(\delta_{ij} - \mathbf{f}_j(\mathbf{x}))$
 
 ## 前向传播 _Forward Propagation_
 
-每个神经元的输出为：
+???+ note "神经元的输出"
 
-$$
-y=f(\sum\limits_{i=1}^{n} w_i x_i + b)
-$$
+    $$
+    y=f\left(\sum\limits_{i=1}^{n} w_i x_i + b\right)
+    $$
 
-其中：
+    其中：
 
--   $y$：神经元的输出
--   $f$：激活函数
--   $w_i$：权重
--   $x_i$：输入
--   $b$：偏置
+    -   $y$：神经元的输出
+    -   $f$：激活函数
+    -   $w_i$：权重
+    -   $x_i$：输入
+    -   $b$：偏置
 
 ## 损失函数 _Loss Function_
 

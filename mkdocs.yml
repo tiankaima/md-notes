@@ -37,6 +37,7 @@ nav:
           - ml/dl/index.md
           - Neural Networks:
               - ml/dl/nn/index.md
+              - ml/dl/nn/bp.md
               - ml/dl/nn/derivative.md
           - ml/dl/cnn.md
 
