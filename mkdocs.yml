@@ -27,10 +27,18 @@ nav:
   - Math:
       - math/index.md
       - Analysis:
-        - math/analysis/calculus.md
+          - math/analysis/calculus.md
       - Probability:
-        - math/probability/probability.md
-        - math/probability/stochastic-processes.md
+          - math/probability/probability.md
+          - math/probability/stochastic-processes.md
+  - Machine Learning:
+      - ml/index.md
+      - Deep Learning:
+          - ml/dl/index.md
+          - Neural Networks:
+              - ml/dl/nn/index.md
+              - ml/dl/nn/derivative.md
+          - ml/dl/cnn.md
 
 # Theme
 theme:
@@ -61,9 +69,11 @@ theme:
   search_index_only: true
   favicon: "favicon.ico"
   icon:
+    annotation: material/arrow-right-circle
     logo: "material/school"
   features:
     - content.action.edit
+    - navigation.indexes
     - navigation.expand
     - navigation.tabs
   font:
