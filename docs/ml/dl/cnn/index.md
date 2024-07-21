@@ -2,16 +2,12 @@
 
 Convolutional Neural Network，卷积神经网络。
 
-!!! notes
+!!! notes "前置知识"
 
-    前置知识:
+    - [深度学习](../index.md)
+    - [神经网络](../nn)
 
-    - [神经网络](./nn.md)
-    - [深度学习](./index.md)
-
-!!! notes
-
-    参考资料:
+!!! notes "参考资料"
 
     -   [Convolutional Neural Networks (LeNet)](http://yann.lecun.com/exdb/lenet/)
     -   [Gradient-Based Learning Applied to Document Recognition](http://yann.lecun.com/exdb/publis/pdf/lecun-01a.pdf)

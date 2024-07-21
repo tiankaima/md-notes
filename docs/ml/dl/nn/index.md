@@ -207,7 +207,7 @@
 
         _tl;dr:_ 使用独热编码时，上面的写法只是 $-log(\hat{y}_k)$ 的另一种写法，也就是只有真实标签的预测值参与计算损失。
 
-## 反向传播 _Backward Propagation_
+## [反向传播 _Backward Propagation_](./bp.md)
 
 -   梯度下降算法 _Gradient Descent_
 
@@ -216,7 +216,7 @@
     $$
 
     -   $\alpha$：学习率
-    -   $\displaystyle\frac{\partial L}{\partial w}$：损失函数对权重的[偏导数](./nn/derivative.md)
+    -   $\displaystyle\frac{\partial L}{\partial w}$：损失函数对权重的偏导数
     -   通过链式法则，计算每个参数的梯度，更新参数
 
 -   随机梯度下降 _Stochastic Gradient Descent_

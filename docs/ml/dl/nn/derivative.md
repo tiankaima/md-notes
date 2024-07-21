@@ -1,4 +1,4 @@
-# Derivative
+# Derivative 导数
 
 本文讨论 Neural Network 中与导数相关的内容。
 

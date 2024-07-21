@@ -1,4 +1,4 @@
-# Backward Propagation
+# Backward Propagation 反向传播
 
 本文讨论神经网络中的反向传播算法 _Backward Propagation_ 的相关内容。
 
@@ -45,42 +45,42 @@ $$
 
     按照上面的计算过程, 我们从 $y^0 \rightarrow y^1, \ldots \rightarrow y^k\rightarrow \ldots \rightarrow y^K$ 这样依次得到的, 结果上看是一个 $y^K(y^0)$ 的函数. 考虑到 $y^0$ 是输入, 接下来要对参数求导, 我们重新以参数作为变量整理这个式子.
 
-考虑共 $K$ 层，最后一层的结果是 $y^K$, 损失函数是 $g(\cdot)$. 我们接下来尝试把 $g(y^K)$ 用 $W^0, W^1, \ldots, W^K$ 表示出来。
+考虑共 $K$ 层，最后一层的结果是 $\mathbf{y}^K$, 损失函数是 $g(\cdot)$. 我们接下来尝试把 $g(\mathbf{y}^K)$ 用 $W^0, W^1, \ldots, W^K$ 表示出来。
 
 从最后一层向前倒退，考虑到：
 
 $$
-g(y^K) = g\left[f^K\left(\mathbf{W}^k y^{k-1}\right)\right]
+g(\mathbf{y}^K) = g\left[f^K\left(\mathbf{W}^k \mathbf{y}^{k-1}\right)\right]
 $$
 
 我们定义：
 
 $$
-g^{K}(\mathbf{W}^K, y^{K-1}) = g\left[f^K\left(\mathbf{W}^K y^{K-1}\right)\right]
+g^{K}(\mathbf{W}^K, \mathbf{y}^{K-1}) = g\left[f^K\left(\mathbf{W}^K \mathbf{y}^{K-1}\right)\right]
 $$
 
 类似的，我们继续向前定义：
 
 $$
-g^{K-1}(\mathbf{W}^{K-1}, \mathbf{W}^{K}, y^{K-2}) = g^{K}(\mathbf{W}^K, y^{K-1})
+g^{K-1}(\mathbf{W}^{K-1}, \mathbf{W}^{K}, \mathbf{y}^{K-2}) = g^{K}(\mathbf{W}^K, \mathbf{y}^{K-1})
 $$
 
-其中 $y^{K-1}=f^{K-1}\left(\mathbf{W}^{K-1} y^{K-2}\right)$, 所以也可以写成：
+其中 $\mathbf{y}^{K-1}=f^{K-1}\left(\mathbf{W}^{K-1} \mathbf{y}^{K-2}\right)$, 所以也可以写成：
 
 $$
-g^{K-1}(\mathbf{W}^{K-1}, \mathbf{W}^{K}, y^{K-2}) = g^{K}(\mathbf{W}^K, \underbrace{f^{K-1}(\mathbf{W}^{K-1} y^{K-2})}_{y^{K-1}})
+g^{K-1}(\mathbf{W}^{K-1}, \mathbf{W}^{K}, \mathbf{y}^{K-2}) = g^{K}(\mathbf{W}^K, \underbrace{f^{K-1}(\mathbf{W}^{K-1} \mathbf{y}^{K-2})}_{\mathbf{y}^{K-1}})
 $$
 
 拓展到一般的情况，对于任意的 $1\leq k\leq K$:
 
 $$
-g^k = g^k(\mathbf{W}^k, \mathbf{W}^{k+1}, \ldots, \mathbf{W}^{K}, y^{k-1})
+g^k = g^k(\mathbf{W}^k, \mathbf{W}^{k+1}, \ldots, \mathbf{W}^{K}, \mathbf{y}^{k-1})
 $$
 
 注意到更一般的类推关系：
 
 $$
-g^k = g^k(\mathbf{W}^k, \ldots, y^{k-1}) = g^{k+1}(\mathbf{W}^{k+1}, \ldots, \underbrace{f^k(\mathbf{W}^{k}\cdot y^{k})}_{y^{k}})
+g^k = g^k(\mathbf{W}^k, \ldots, \mathbf{y}^{k-1}) = g^{k+1}(\mathbf{W}^{k+1}, \ldots, \underbrace{f^k(\mathbf{W}^{k}\cdot \mathbf{y}^{k})}_{\mathbf{y}^{k}})
 $$
 
 分别计算 $\displaystyle\frac{\partial g^k}{\partial W^k_{a b}}$ 和 $\displaystyle\frac{\partial g^k}{\partial y^{k-1}_a}$:
@@ -112,3 +112,17 @@ $$
     需要补充定义 $\displaystyle g^{K+1} = g(y^K)$，并且 $\displaystyle\frac{\partial g^{K+1}}{\partial y^K_i} = \frac{\partial g}{\partial y^K_i}$, $\displaystyle\frac{\partial g^{K+1}}{\partial W^{K+1}_{a b}}$ 不存在也无需处理, 注意观察上面的递推过程, 并不依赖于这个量。
 
 ## 梯度下降算法 _Gradient Descent_
+
+经过上面的处理，我们计算得到了 $\displaystyle\frac{\partial g^k}{\partial W^k_{a b}}$ 我们可以使用梯度下降算法来更新参数。
+
+!!! warning
+
+    在部分文献中, 会将偏置项 $b^k$ 与线性变换的系数 $\mathbf{W}^k_{a b}$ 合并在一起记为 $\theta$, 我们下文同样采取这样的写法.
+
+按照如下方式进行更新：
+
+$$
+\theta \leftarrow \theta - \eta \frac{\partial g^K}{\partial \theta}
+$$
+
+其中 $\eta$ 是学习率 _learning rate_。

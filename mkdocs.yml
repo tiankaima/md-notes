@@ -35,11 +35,12 @@ nav:
       - ml/index.md
       - Deep Learning:
           - ml/dl/index.md
-          - Neural Networks:
+          - Neural Network:
               - ml/dl/nn/index.md
-              - ml/dl/nn/bp.md
-              - ml/dl/nn/derivative.md
-          - ml/dl/cnn.md
+              - Backward Propagation: ml/dl/nn/bp.md
+              - Derivative: ml/dl/nn/derivative.md
+          - CNN:
+              - ml/dl/cnn/index.md
 
 # Theme
 theme:
