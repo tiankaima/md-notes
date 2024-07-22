@@ -1,0 +1,24 @@
+.jp-Collapser {
+    display: none;
+}
+
+.jupyter-wrapper {
+    --jp-notebook-padding: 0px !important;
+    --jp-cell-padding: 0px !important;
+    --jp-code-padding: 0px !important;
+
+    .jp-Notebook {
+        .jp-Cell {
+            padding-block: 5px !important;
+        }
+    }
+
+    @media screen and (max-width: 76.25em) {
+        .jp-CodeCell .jp-InputPrompt {
+            display: none !important;
+        }
+        .jp-CodeCell .jp-OutputPrompt {
+            display: none !important;
+        }
+    }
+}
