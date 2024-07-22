@@ -40,6 +40,7 @@ nav:
           - Neural Network:
               - ml/dl/nn/index.md
               - Backward Propagation: ml/dl/nn/bp.md
+              - Playground/MNIST: ml/dl/nn/playground-mnist.ipynb
               - Miscellaneous:
                   - Derivative: ml/dl/nn/derivative.md
                   - Graph: ml/dl/nn/graph.ipynb
