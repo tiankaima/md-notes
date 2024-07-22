@@ -19,11 +19,14 @@ nav:
       - About [EN]: index/about.md
       - Test Page: index/test.md
   - Blog:
-      - blog/modern-cpp.md
-      - blog/schoolwork-links.md
-      - blog/typst-tutorial-for-latex-user.md
-      - blog/ustc-websites.md
-      - blog/xzkd-new-tokens.md
+      - C++:
+          - blog/modern-cpp.md
+      - Typst:
+          - blog/typst-tutorial-for-latex-user.md
+      - USTC:
+          - blog/schoolwork-links.md
+          - blog/ustc-websites.md
+          - blog/xzkd-new-tokens.md
   - Math:
       - math/index.md
       - Analysis:
@@ -38,8 +41,8 @@ nav:
               - ml/dl/nn/index.md
               - Backward Propagation: ml/dl/nn/bp.md
               - Miscellaneous:
-                - Derivative: ml/dl/nn/derivative.md
-                - Graph: ml/dl/nn/graph.ipynb
+                  - Derivative: ml/dl/nn/derivative.md
+                  - Graph: ml/dl/nn/graph.ipynb
           - CNN:
               - ml/dl/cnn/index.md
 
