@@ -34,18 +34,18 @@ nav:
   - Machine Learning:
       - ml/index.md
       - Deep Learning:
-          - ml/dl/index.md
           - Neural Network:
               - ml/dl/nn/index.md
               - Backward Propagation: ml/dl/nn/bp.md
-              - Derivative: ml/dl/nn/derivative.md
+              - Miscellaneous:
+                - Derivative: ml/dl/nn/derivative.md
+                - Graph: ml/dl/nn/graph.ipynb
           - CNN:
               - ml/dl/cnn/index.md
 
 # Theme
 theme:
-  name: null
-  custom_dir: "mkdocs-material/material/templates"
+  name: material
   static_templates:
     - 404.html
   language: "zh"
@@ -77,14 +77,23 @@ theme:
     - content.action.edit
     - navigation.indexes
     - navigation.expand
+    - navigation.prune
+    - navigation.sections
     - navigation.tabs
+    - navigation.tabs.sticky
+    - navigation.tracking
+    - search.suggest
+    - search.highlight
+    - toc.follow
   font:
     text: "Fira Sans"
     code: "Fira Mono"
 
 plugins:
+  - search
   - git-revision-date-localized
   - glightbox
+  - mkdocs-jupyter
 
 # Customization
 extra:
