@@ -31,6 +31,7 @@ nav:
       - math/index.md
       - Analysis:
           - math/analysis/calculus.md
+          - math/analysis/functional-analysis.md
       - Probability:
           - math/probability/probability.md
           - math/probability/stochastic-processes.md
