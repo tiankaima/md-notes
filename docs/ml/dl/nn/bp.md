@@ -20,8 +20,8 @@
 
 考虑第 $k$ 层的计算，包含两部分：线性算子 $\mathbf{W}^k \in \mathbb{L}\left(\mathbb{R}^{n_{k-1}}, \mathbb{R}^{n_k}\right)$ 和激活函数 $f^k: \mathbb{R}\rightarrow \mathbb{R}$。
 
--   输入是从上一层 ($k-1$ 层) 拿到的结果 $\mathbf{y}^{k-1} = (x_1, x_2, \ldots, x_{n_{k-1}}) \in \mathbb{R}^{n_{k-1}}$, 输入层记为 $\mathbf{y}^0=\mathbf{x}$。
--   输出则是 $\mathbf{y}^k = (x_1, x_2, \ldots, x_{n_k}) \in \mathbb{R}^{n_k}$。
+-   输入是从上一层 ($k-1$ 层) 拿到的结果 $\mathbf{y}^{k-1} = (y^{k-1}_1, y^{k-1}_2, \ldots, y^{k-1}_{n_{k-1}}) \in \mathbb{R}^{n_{k-1}}$, 输入层记为 $\mathbf{y}^0=\mathbf{x}$。
+-   输出则是 $\mathbf{y}^k = (y^k_1, y^k_2, \ldots, y^k_{n_k}) \in \mathbb{R}^{n_k}$。
 
 即：
 
@@ -50,7 +50,7 @@ $$
 从最后一层向前倒退，考虑到：
 
 $$
-g(\mathbf{y}^K) = g\left[f^K\left(\mathbf{W}^k \mathbf{y}^{k-1}\right)\right]
+g(\mathbf{y}^K) = g\left[f^K\left(\mathbf{W}^K \mathbf{y}^{K-1}\right)\right]
 $$
 
 我们定义：
@@ -80,7 +80,7 @@ $$
 注意到更一般的类推关系：
 
 $$
-g^k = g^k(\mathbf{W}^k, \ldots, \mathbf{y}^{k-1}) = g^{k+1}(\mathbf{W}^{k+1}, \ldots, \underbrace{f^k(\mathbf{W}^{k}\cdot \mathbf{y}^{k})}_{\mathbf{y}^{k}})
+g^k = g^k(\mathbf{W}^k, \ldots, \mathbf{y}^{k-1}) = g^{k+1}(\mathbf{W}^{k+1}, \ldots, \underbrace{f^k(\mathbf{W}^{k}\cdot \mathbf{y}^{k-1})}_{\mathbf{y}^{k}})
 $$
 
 分别计算 $\displaystyle\frac{\partial g^k}{\partial W^k_{a b}}$ 和 $\displaystyle\frac{\partial g^k}{\partial y^{k-1}_a}$:
@@ -92,6 +92,7 @@ $$
     y^{k}_i = f^k\left(\sum_{j=1}^{n_{k-1}} W^k_{ij} y^{k-1}_j
 \right) \Rightarrow \frac{\partial y^{k}_i}{\partial W^k_{a b}} = \delta_{i a}\cdot \frac{\textrm{d} f^k}{\textrm{d}x} y^{k-1}_b \right)\\\\
 &= \frac{\partial g^{k+1}}{\partial y^k_a} \frac{\textrm{d} f^k}{\textrm{d}x} y^{k-1}_b\\\\
+\hline\\\\
 \frac{\partial g^k}{\partial y^{k-1}_a} &= \sum_{i=1}^{n_k} \frac{\partial g^{k+1}}{\partial y^{k}_i} \frac{\partial y^{k}_i}{\partial y^{k-1}_a}\\\\
 \text{Consider} \quad &\left(
     \frac{\partial y^{k}_i}{\partial y^{k-1}_a} = \frac{\textrm{d} f^k}{\textrm{d}x} W^k_{ia}\right)\\\\
