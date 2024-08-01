@@ -15,6 +15,7 @@ mkdocs-git-revision-date-localized-plugin = "*"
 mkdocs-glightbox = "*"
 mkdocs-jupyter = "*"
 mkdocs-material = "*"
+mkdocs-redirects = "*"
 
 [dev-packages]
 

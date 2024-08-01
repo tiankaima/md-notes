@@ -20,13 +20,13 @@ nav:
       - Test Page: index/test.md
   - Blog:
       - C++:
-          - blog/modern-cpp.md
+          - blog/cpp/modern-cpp.md
       - Typst:
-          - blog/typst-tutorial-for-latex-user.md
+          - blog/typst/typst-tutorial-for-latex-user.md
       - USTC:
-          - blog/schoolwork-links.md
-          - blog/ustc-websites.md
-          - blog/xzkd-new-tokens.md
+          - blog/ustc/schoolwork-links.md
+          - blog/ustc/ustc-websites.md
+          - blog/ustc/xzkd-new-tokens.md
   - Math:
       - math/index.md
       - Analysis:
@@ -99,6 +99,9 @@ plugins:
   - git-revision-date-localized
   - glightbox
   - mkdocs-jupyter
+  - redirects:
+      redirect_maps:
+        'blog/xzkd-new-tokens.md': 'blog/ustc/xzkd-new-tokens.md'
 
 # Customization
 extra:
