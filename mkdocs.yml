@@ -23,6 +23,8 @@ nav:
           - blog/cpp/modern-cpp.md
       - Typst:
           - blog/typst/typst-tutorial-for-latex-user.md
+      - Terminal:
+          - blog/terminal/cheatsheets.md
       - USTC:
           - blog/ustc/schoolwork-links.md
           - blog/ustc/ustc-websites.md
