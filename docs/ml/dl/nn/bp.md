@@ -127,3 +127,7 @@ $$
 $$
 
 其中 $\eta$ 是学习率 _learning rate_。
+
+!!! warning ""
+
+    注意 $\displaystyle\frac{\partial g^K}{\partial \theta}$ 就是 $\displaystyle\frac{\partial g^k}{\partial W^k_{a b}}$, $g^k \equiv g^K$, 区别仅仅在自变量上。
