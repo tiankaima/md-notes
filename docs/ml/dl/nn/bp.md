@@ -108,9 +108,13 @@ $$
 
 也即反向传播的过程。
 
-!!! note "上界 $g^{K+1}$ 的处理"
+!!! note "$g^{K+1}$ 的处理"
 
     需要补充定义 $\displaystyle g^{K+1} = g(y^K)$，并且 $\displaystyle\frac{\partial g^{K+1}}{\partial y^K_i} = \frac{\partial g}{\partial y^K_i}$, $\displaystyle\frac{\partial g^{K+1}}{\partial W^{K+1}_{a b}}$ 不存在也无需处理, 注意观察上面的递推过程, 并不依赖于这个量。
+
+!!! note
+
+    在部分文献中，会只将 $\displaystyle\frac{\partial g^k}{\partial W^k_{a b}}$ 称作梯度，而将传递的 $\displaystyle\frac{\partial g^k}{\partial y^{k-1}_a}$ 称作误差，这样的说法更明确了「每层之间只需要传递误差」这一点，更符合「反向传播」的定义。
 
 ## 梯度下降算法 _Gradient Descent_
 

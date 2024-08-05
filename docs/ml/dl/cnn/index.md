@@ -53,33 +53,57 @@ Convolutional Neural Network，卷积神经网络。
 
 接下来我们从全连接层的思路出发，构造一个符合这样条件的数学模型。
 
-既然输入数据不再展平，我们接下来以 $\mathbf{X}$ 表示输入数据，$\mathbf{X}_{i j}$ 表示第 $(i,j)$ 位置的像素 (对于灰度图像，$\mathbf{X}_{i j}$ 是一个标量，对于彩色图像，$\mathbf{X}_{i j}$ 是一个向量), $\mathbf{Y}$ 表示输出数据，$\mathbf{Y}_{i j}$ 表示第 $(i,j)$ 位置的输出。
+既然输入数据不再展平，我们接下来以 $\mathbf{X}$ 表示输入数据，$\mathbf{Y}$ 表示输出数据，$Y_{i j}$ 表示第 $(i,j)$ 位置的输出。
 
 首先按照全连接层的思路，每个输出像素都是由输入像素的线性组合 + 偏置项得到的，即
 
 $$
-\mathbf{Y}_{i j} = \sum_{m,n} \mathbf{W}_{m n i j} \cdot \mathbf{X}_{m n} + b_{i j}
+Y_{i j} = \sum_{m,n} W_{m n i j} \cdot X_{m n} + b_{i j}
 $$
 
-> $m,n$ 取值范围 即为使得 $\mathbf{X}_{m n}$ 有意义 (在输入图像范围内) 的所有值。
+> $m,n$ 取值范围 即为使得 $X_{m n}$ 有意义 (在输入图像范围内) 的所有值。
 
 为方便下文的处理，我们将 $(m,n)$ 表示成 $(i,j)+(a, b)$的形式，这样上式可以写成
 
 $$
-\mathbf{Y}_{i j} = \sum_{a,b} \mathbf{W}_{a b i j} \cdot \mathbf{X}_{i+a, j+b} + b_{i j}
+Y_{i j} = \sum_{a,b} W_{a b i j} \cdot X_{i+a, j+b} + b_{i j}
 $$
 
-根据上面提到的 _参数共享_, 可以把 $\mathbf{W}_{a b i j}$ 写作 $\mathbf{W}_{a b}$; 同时，为了限制参数量，只需要评估距离 $(i,j)$ 一定范围内的像素，即控制 $\vert a \vert, \vert b \vert \leq k$ (这里 $k$ 是一个超参数), 这样上式可以写成：
+根据上面提到的 _参数共享_, 可以把 $W_{a b i j}$ 写作 $W_{a b}$; 同时，为了限制参数量，只需要评估距离 $(i,j)$ 一定范围内的像素，即控制 $\vert a \vert, \vert b \vert \leq k$ (这里 $k$ 是一个超参数), 这样上式可以写成：
 
 $$
-\mathbf{Y}_{i j} = \sum_{\vert a \vert, \vert b \vert \leq k} \mathbf{W}_{a b} \cdot \mathbf{X}_{i+a, j+b} + b_{i j}
+Y_{i j} = \sum_{\vert a \vert, \vert b \vert \leq k} W_{a b} \cdot X_{i+a, j+b} + b_{i j}
 $$
 
-到这里我们就完整地定义了一个卷积层的操作，其中 $\mathbf{W}_{a b}$ 是卷积核 _Kernel_，$b_{i j}$ 是偏置项。
+到这里我们就完整地定义了一个卷积层的操作，其中 $W_{a b}$ 是卷积核 _Kernel_, $k$ 是卷积核的大小，$b_{i j}$ 是偏置项。
 
-!!! warning "卷积？互相关？"
+写成离散卷积的形式：
 
-    上面的定义实际上是互相关 _Cross-Correlation_ 而不是卷积 _Convolution_。这两者相差一个反转操作，如果预先将核翻转定义 $(i,j) \rightarrow (-i, -j)$, 那么上面的定义就是卷积操作。
+$$
+\mathbf{Y} = \mathbf{W} \star \mathbf{X} + \mathbf{b} = \mathbf{W}^{*} * \mathbf{X} + \mathbf{b}
+$$
+
+上面的定义实际上是互相关 _Cross-Correlation_ ($\star$) 而不是卷积 _Convolution_ ($*$)。这两者相差一个反转操作，如果预先将核翻转定义 $(i,j) \rightarrow (-i, -j)$, 那么上面的定义就是卷积操作。
+
+!!! note ""
+
+    在其他领域，互相关与卷积的差别也成立类似关系，考虑 $f, g: \mathbb{R} \rightarrow \mathbb{C}$, 则它们的卷积定义为
+
+    $$
+    (f * g)(t) = \int_{-\infty}^{\infty} f(\tau) g(t-\tau) d\tau
+    $$
+
+    而互相关定义为
+
+    $$
+    (f \star g)(t) = \int_{-\infty}^{\infty} \overline{f(\tau)} g(t+\tau) d\tau
+    $$
+
+    这两者的关系是
+
+    $$
+    f(t) \star g(t) = \overline{f(-t)} * g(t)
+    $$
 
 考虑输入图像尺寸 $n_h \times n_w$, Kernel 尺寸 $k_h \times k_w$, 则输出图像尺寸为：
 
@@ -132,12 +156,86 @@ $$
 为详细说明这一点，我们以几个例子来说明：
 
 -   $C=1, C'=1$: 卷积核：$(1, 1, k_h, k_w)$，输出形状为 $(N, 1, H', W')$。
+
+    这就是上面讨论的单通道图像的情况。
+
 -   $C=3, C'=1$: 卷积核：$(1, 3, k_h, k_w)$，输出形状为 $(N, 1, H', W')$。
 
-    相当于对每个通道的图像分别进行卷积操作，然后将结果相加，这实际上与一个 $n\times 3$ 的矩阵乘以一个 $3\times 1$ 的矩阵的操作是一样的。
+    相当于对每个通道的图像分别进行卷积操作，然后将结果相加。
 
--   $C=3, C'=3$: 卷积核：$(3, 3, k_h, k_w)$，输出形状为 $(N, 3, H', W')$。
-
-    相当于 $N \times 3$ 的矩阵乘以一个 $3 \times 3$ 的矩阵。
+    这实际上与一个 $n\times 3$ 的矩阵乘以一个 $3\times 1$ 的矩阵的操作是一样的，不过此时元素是二维矩阵，而其之间的乘法是互相关。
 
 有时也称 $(1, C, k_h, k_w)$ 的卷积核为 过滤器 _Filter_, 一个 Filter 对应一个输出通道，每个 Filter 中包含一个或多个卷积核，分别对应输入通道，并相加。
+
+### 反向传播 Backpropagation
+
+在 [nn/bp](../nn/bp.md) 中我们已经讨论了全连接层反向传播的一般方法，在卷积层中，除了图像不再展平带来的区别 (维数，标号), 不使用激活函数 (可以看作 $f(x)=x$), 最重要的区别是一个参数的梯度是由多个输入共享的。
+
+参照全连接层反向传播的思路，我们在下面推导由 $\displaystyle \frac{\partial g}{\partial Y_{i j}}$ 得到 $\displaystyle \frac{\partial g}{\partial W_{a b}}$ 和 $\displaystyle \frac{\partial g}{\partial X_{i j}}$。
+
+$$
+\frac{\partial g}{\partial W_{a b}}=\sum_{i, j}^{} \frac{\partial g}{\partial Y_{i j}} \cdot \frac{\partial Y_{i j}}{\partial W_{a b}}
+$$
+
+注意到 $\displaystyle \frac{\partial Y_{i j}}{\partial W_{a b}}=X_{i+a, j+b}$，所以：
+
+$$
+\frac{\partial g}{\partial W_{a b}}=\sum_{i, j}^{} \frac{\partial g}{\partial Y_{i j}} \cdot X_{i+a, j+b}
+$$
+
+也可以写成互相关的形式：
+
+$$
+\left(\frac{\partial g}{\partial W}\right) = \mathbf{X} \star \left(\frac{\partial g}{\partial Y}\right)
+$$
+
+$\displaystyle \frac{\partial g}{\partial X_{i j}}$ 的推导与上面类似，最终结果为：
+
+$$
+\left(\frac{\partial g}{\partial X}\right) = \left(\frac{\partial g}{\partial Y}\right) \star \mathbf{W}
+$$
+
+## 池化层 Pooling Layer
+
+池化 _Pooling_ 也称为下采样 _Downsampling_，是一种减少特征图大小的方法。池化层通常紧跟在卷积层之后，用于减少特征图的大小，同时保留重要的特征。
+
+对于一张 $n_h \times n_w$ 的特征图，池化操作通常是在一个 $k_h \times k_w$ 的窗口上进行的，步长为 $s$，输出图像的尺寸为：
+
+$$
+\left\lfloor \frac{n_h - k_h}{s} \right\rfloor + 1 \times \left\lfloor \frac{n_w - k_w}{s} \right\rfloor + 1
+$$
+
+多数情况下：
+
+-   窗口是正方形 $k_h = k_w = k$
+-   步长是 $s = k$
+
+此时输出图像的尺寸为：
+
+$$
+\left\lfloor \frac{n_h}{k} \right\rfloor \times \left\lfloor \frac{n_w}{k} \right\rfloor
+$$
+
+### 最大池化 Max Pooling
+
+-   正向传播：
+
+    $$
+    Y_{i j} = \max_{\vert a \vert, \vert b \vert \leq k} X_{s \cdot i+a, s \cdot j+b}
+    $$
+
+-   反向传播：
+
+    由于只有最大值对输出有贡献，只需要将误差传递给窗口中最大值即可。
+
+### 平均池化 Average Pooling
+
+-   正向传播：
+
+    $$
+    Y_{i j} = \frac{1}{k^2} \sum_{\vert a \vert, \vert b \vert \leq k} X_{s \cdot i+a, s \cdot j+b}
+    $$
+
+-   反向传播：
+
+    由于所有值对输出有贡献，只需要将误差平均传递给窗口中的值即可。
