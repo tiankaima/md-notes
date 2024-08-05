@@ -49,6 +49,7 @@ nav:
                   - Graph: ml/dl/nn/graph.ipynb
           - CNN:
               - ml/dl/cnn/index.md
+              - Playground/LeNet: ml/dl/cnn/playground-lenet.ipynb
 
 # Theme
 theme:
@@ -103,7 +104,7 @@ plugins:
   - mkdocs-jupyter
   - redirects:
       redirect_maps:
-        'blog/xzkd-new-tokens.md': 'blog/ustc/xzkd-new-tokens.md'
+        "blog/xzkd-new-tokens.md": "blog/ustc/xzkd-new-tokens.md"
 
 # Customization
 extra:
