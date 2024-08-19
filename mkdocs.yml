@@ -40,6 +40,7 @@ nav:
   - Machine Learning:
       - ml/index.md
       - Deep Learning:
+          - Review: ml/dl/review.md
           - Neural Network:
               - ml/dl/nn/index.md
               - Backward Propagation: ml/dl/nn/bp.md
@@ -49,6 +50,7 @@ nav:
                   - Graph: ml/dl/nn/graph.ipynb
           - CNN:
               - ml/dl/cnn/index.md
+              - History: ml/dl/cnn/history.md
               - Playground/LeNet: ml/dl/cnn/playground-lenet.ipynb
 
 # Theme

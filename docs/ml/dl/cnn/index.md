@@ -4,7 +4,6 @@ Convolutional Neural Network，卷积神经网络。
 
 !!! notes "前置知识"
 
-    - [深度学习](../index.md)
     - [神经网络](../nn)
 
 ## 概念 {#concept}
@@ -83,9 +82,10 @@ $$
 \mathbf{Y} = \mathbf{W} \star \mathbf{X} + \mathbf{b} = \mathbf{W}^{*} * \mathbf{X} + \mathbf{b}
 $$
 
-上面的定义实际上是互相关 _Cross-Correlation_ ($\star$) 而不是卷积 _Convolution_ ($*$)。这两者相差一个反转操作，如果预先将核翻转定义 $(i,j) \rightarrow (-i, -j)$, 那么上面的定义就是卷积操作。
+!!! warning ""
 
-!!! note ""
+    <span style="color:red">上面的定义实际上是互相关 _Cross-Correlation_ ($\star$) 而不是卷积 _Convolution_ ($*$)。</span>
+    在 Deep Learning 中，这两个名词经常被混用，原因是这两者相差一个反转操作，如果预先将核翻转定义 $(i,j) \rightarrow (-i, -j)$, 那么上面的定义就是卷积操作。
 
     在其他领域，互相关与卷积的差别也成立类似关系，考虑 $f, g: \mathbb{R} \rightarrow \mathbb{C}$, 则它们的卷积定义为
 
