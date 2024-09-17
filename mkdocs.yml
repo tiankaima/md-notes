@@ -25,6 +25,7 @@ nav:
           - blog/typst/typst-tutorial-for-latex-user.md
       - Terminal:
           - blog/terminal/cheatsheets.md
+          - blog/terminal/rpi-setup.md
       - USTC:
           - blog/ustc/schoolwork-links.md
           - blog/ustc/ustc-websites.md
@@ -52,6 +53,11 @@ nav:
               - ml/dl/cnn/index.md
               - History: ml/dl/cnn/history.md
               - Playground/LeNet: ml/dl/cnn/playground-lenet.ipynb
+          - NeRF:
+              - ml/dl/nerf/index.md
+          - Gaussian Splatting:
+              - ml/dl/gs/index.md
+              - 3D Gaussian Splatting: ml/dl/gs/3d-gs.md
 
 # Theme
 theme:
