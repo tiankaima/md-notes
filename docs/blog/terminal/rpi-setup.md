@@ -207,3 +207,98 @@ sudo apt install zsh tmux bat gh
     ```
 
     > 也可以考虑 `/etc/sshd_config` `ForceCommand`
+
+## Some tweakings
+
+### UAS -> USB
+
+UAS: USB Attached Storage; 在 Rpi 上外接了一个 12 TB 的盘，挂在 USB 3.0 上，但是 UAS 的挂载模式似乎有些问题，而且长时间没修，参考：
+
+-   [rpi/linux#5060](https://github.com/raspberrypi/linux/issues/5060) [#5737](https://github.com/raspberrypi/linux/issues/5737) [#3404](https://github.com/raspberrypi/linux/issues/3404)
+
+Sadly 我其实到现在都不理解到底是哪里出了问题，`dmesg` 会先提示一段时间的读写错误：
+
+```txt
+Sep 22 17:08:51 raspberrypi kernel: xhci-hcd xhci-hcd.0: WARN A Set TR Deq Ptr command is pending for slot 1 ep 3
+Sep 22 17:08:51 raspberrypi kernel: xhci-hcd xhci-hcd.0: Mismatch between completed Set TR Deq Ptr command & xHCI internal state.
+Sep 22 17:08:51 raspberrypi kernel: xhci-hcd xhci-hcd.0: ep deq seg = 00000000a16ba073, deq ptr = 00000000e46b19c2
+Sep 22 17:08:51 raspberrypi kernel: xhci-hcd xhci-hcd.0: Mismatch between completed Set TR Deq Ptr command & xHCI internal state.
+Sep 22 17:08:51 raspberrypi kernel: xhci-hcd xhci-hcd.0: ep deq seg = 00000000ccb6951c, deq ptr = 0000000008a351a2
+Sep 22 17:08:51 raspberrypi kernel: xhci-hcd xhci-hcd.0: Mismatch between completed Set TR Deq Ptr command & xHCI internal state.
+Sep 22 17:08:51 raspberrypi kernel: xhci-hcd xhci-hcd.0: ep deq seg = 00000000397da6e2, deq ptr = 00000000eca82b12
+Sep 22 17:08:51 raspberrypi kernel: xhci-hcd xhci-hcd.0: Mismatch between completed Set TR Deq Ptr command & xHCI internal state.
+Sep 22 17:08:51 raspberrypi kernel: xhci-hcd xhci-hcd.0: ep deq seg = 00000000b326086b, deq ptr = 000000001871ee96
+Sep 22 17:08:51 raspberrypi kernel: xhci-hcd xhci-hcd.0: Mismatch between completed Set TR Deq Ptr command & xHCI internal state.
+Sep 22 17:08:51 raspberrypi kernel: xhci-hcd xhci-hcd.0: ep deq seg = 0000000000000000, deq ptr = 0000000000000000
+Sep 22 17:08:51 raspberrypi kernel: xhci-hcd xhci-hcd.0: WARN A Set TR Deq Ptr command is pending for slot 1 ep 3
+```
+
+```txt
+Sep 22 17:07:23 raspberrypi kernel: sd 0:0:0:0: [sda] tag#18 uas_eh_abort_handler 0 uas-tag 19 inflight: CMD OUT
+Sep 22 17:07:23 raspberrypi kernel: sd 0:0:0:0: [sda] tag#18 CDB: opcode=0x8a 8a 00 00 00 00 02 7a bf c9 f8 00 00 04 00 00 00
+Sep 22 17:07:23 raspberrypi kernel: sd 0:0:0:0: [sda] tag#17 uas_eh_abort_handler 0 uas-tag 18 inflight: CMD OUT
+Sep 22 17:07:23 raspberrypi kernel: sd 0:0:0:0: [sda] tag#17 CDB: opcode=0x8a 8a 00 00 00 00 02 7a bf c5 f8 00 00 04 00 00 00
+Sep 22 17:07:23 raspberrypi kernel: sd 0:0:0:0: [sda] tag#16 uas_eh_abort_handler 0 uas-tag 17 inflight: CMD OUT
+Sep 22 17:07:23 raspberrypi kernel: sd 0:0:0:0: [sda] tag#16 CDB: opcode=0x8a 8a 00 00 00 00 02 7a bf c3 b8 00 00 02 40 00 00
+Sep 22 17:07:23 raspberrypi kernel: sd 0:0:0:0: [sda] tag#15 uas_eh_abort_handler 0 uas-tag 16 inflight: CMD OUT
+Sep 22 17:07:23 raspberrypi kernel: sd 0:0:0:0: [sda] tag#15 CDB: opcode=0x8a 8a 00 00 00 00 02 7a bf bf b8 00 00 04 00 00 00
+Sep 22 17:07:23 raspberrypi kernel: sd 0:0:0:0: [sda] tag#14 uas_eh_abort_handler 0 uas-tag 15 inflight: CMD OUT
+Sep 22 17:07:23 raspberrypi kernel: sd 0:0:0:0: [sda] tag#14 CDB: opcode=0x8a 8a 00 00 00 00 02 7a bf bb b8 00 00 04 00 00 00
+Sep 22 17:07:23 raspberrypi kernel: sd 0:0:0:0: [sda] tag#13 uas_eh_abort_handler 0 uas-tag 14 inflight: CMD OUT
+Sep 22 17:07:23 raspberrypi kernel: sd 0:0:0:0: [sda] tag#13 CDB: opcode=0x8a 8a 00 00 00 00 02 7a bf b7 b8 00 00 04 00 00 00
+Sep 22 17:07:23 raspberrypi kernel: sd 0:0:0:0: [sda] tag#12 uas_eh_abort_handler 0 uas-tag 13 inflight: CMD OUT
+Sep 22 17:07:23 raspberrypi kernel: sd 0:0:0:0: [sda] tag#12 CDB: opcode=0x8a 8a 00 00 00 00 02 7a bf b3 b8 00 00 04 00 00 00
+Sep 22 17:07:23 raspberrypi kernel: sd 0:0:0:0: [sda] tag#11 uas_eh_abort_handler 0 uas-tag 12 inflight: CMD OUT
+Sep 22 17:07:23 raspberrypi kernel: sd 0:0:0:0: [sda] tag#11 CDB: opcode=0x8a 8a 00 00 00 00 02 7a bf af b8 00 00 04 00 00 00
+Sep 22 17:07:23 raspberrypi kernel: sd 0:0:0:0: [sda] tag#10 uas_eh_abort_handler 0 uas-tag 11 inflight: CMD OUT
+Sep 22 17:07:23 raspberrypi kernel: sd 0:0:0:0: [sda] tag#10 CDB: opcode=0x8a 8a 00 00 00 00 02 7a bf ab b8 00 00 04 00 00 00
+Sep 22 17:07:23 raspberrypi kernel: sd 0:0:0:0: [sda] tag#9 uas_eh_abort_handler 0 uas-tag 10 inflight: CMD OUT
+Sep 22 17:07:23 raspberrypi kernel: sd 0:0:0:0: [sda] tag#9 CDB: opcode=0x8a 8a 00 00 00 00 02 7a bf a7 b8 00 00 04 00 00 00
+Sep 22 17:07:23 raspberrypi kernel: sd 0:0:0:0: [sda] tag#8 uas_eh_abort_handler 0 uas-tag 9 inflight: CMD OUT
+```
+
+然后就掉盘：
+
+```txt
+Sep 22 17:11:22 raspberrypi kernel: sd 0:0:0:0: [sda] tag#0 CDB: opcode=0x8a 8a 00 00 00 00 02 7b ae 10 20 00 00 04 00 00 00
+Sep 22 17:11:22 raspberrypi kernel: scsi host0: uas_eh_device_reset_handler start
+Sep 22 17:11:23 raspberrypi kernel: usb 2-1: reset SuperSpeed USB device number 2 using xhci-hcd
+Sep 22 17:11:23 raspberrypi kernel: scsi host0: uas_eh_device_reset_handler success
+Sep 22 17:12:30 raspberrypi NetworkManager[739]: <info>  [1726996350.0114] dhcp4 (eth0): state changed new lease, address=10.250.206.186
+Sep 22 17:12:56 raspberrypi kernel: xhci-hcd xhci-hcd.0: xHCI host not responding to stop endpoint command
+Sep 22 17:12:56 raspberrypi kernel: xhci-hcd xhci-hcd.0: xHCI host controller not responding, assume dead
+Sep 22 17:12:56 raspberrypi kernel: xhci-hcd xhci-hcd.0: HC died; cleaning up
+Sep 22 17:12:56 raspberrypi kernel: usb 2-1: USB disconnect, device number 2
+Sep 22 17:12:56 raspberrypi kernel: sd 0:0:0:0: [sda] tag#19 uas_zap_pending 0 uas-tag 8 inflight: CMD
+Sep 22 17:12:56 raspberrypi kernel: sd 0:0:0:0: [sda] tag#19 CDB: opcode=0x8a 8a 00 00 00 00 02 7c 30 7d 88 00 00 04 00 00 00
+Sep 22 17:12:56 raspberrypi kernel: scsi_io_completion_action: 6 callbacks suppressed
+Sep 22 17:12:56 raspberrypi kernel: sd 0:0:0:0: [sda] tag#19 UNKNOWN(0x2003) Result: hostbyte=0x01 driverbyte=DRIVER_OK cmd_age=5s
+Sep 22 17:12:56 raspberrypi kernel: sd 0:0:0:0: [sda] tag#19 CDB: opcode=0x8a 8a 00 00 00 00 02 7c 30 7d 88 00 00 04 00 00 00
+Sep 22 17:12:56 raspberrypi kernel: blk_print_req_error: 6 callbacks suppressed
+Sep 22 17:12:56 raspberrypi kernel: I/O error, dev sda, sector 10673487240 op 0x1:(WRITE) flags 0x4104000 phys_seg 32 prio class 2
+Sep 22 17:12:56 raspberrypi kernel: device offline error, dev sda, sector 10673457672 op 0x1:(WRITE) flags 0x4100000 phys_seg 28 prio class 2
+Sep 22 17:12:56 raspberrypi kernel: device offline error, dev sda, sector 10673488264 op 0x1:(WRITE) flags 0x4104000 phys_seg 32 prio class 2
+Sep 22 17:12:56 raspberrypi kernel: device offline error, dev sda, sector 10673489288 op 0x1:(WRITE) flags 0x4104000 phys_seg 32 prio class 2
+Sep 22 17:12:56 raspberrypi kernel: device offline error, dev sda, sector 10673490312 op 0x1:(WRITE) flags 0x4100000 phys_seg 32 prio class 2
+Sep 22 17:12:56 raspberrypi kernel: device offline error, dev sda, sector 10673491336 op 0x1:(WRITE) flags 0x4104000 phys_seg 32 prio class 2
+Sep 22 17:12:56 raspberrypi kernel: device offline error, dev sda, sector 10673492360 op 0x1:(WRITE) flags 0x4104000 phys_seg 32 prio class 2
+Sep 22 17:12:56 raspberrypi kernel: device offline error, dev sda, sector 10673493384 op 0x1:(WRITE) flags 0x4104000 phys_seg 32 prio class 2
+Sep 22 17:12:56 raspberrypi kernel: device offline error, dev sda, sector 10673494408 op 0x1:(WRITE) flags 0x4104000 phys_seg 32 prio class 2
+Sep 22 17:12:56 raspberrypi kernel: device offline error, dev sda, sector 10673495432 op 0x1:(WRITE) flags 0x4104000 phys_seg 32 prio class 2
+Sep 22 17:12:56 raspberrypi kernel: kworker/u12:8: attempt to access beyond end of device
+                                    sda: rw=68157441, sector=10673644136, nr_sectors = 9088 limit=0
+```
+
+再往后还有一些 btrfs 的报错，显然跟 fs 没关系我寄不放出来了。
+
+于是参考了 [这篇文章](<https://leo.leung.xyz/wiki/How_to_disable_USB_Attached_Storage_(UAS)>) 提到是 UAS 的问题，于是按照提示操作：
+
+```shell
+# lsusb
+```
+
+```txt title="/boot/firmware/cmdline.txt"
+usb-storage.quirks=XX.YY:u
+```
+
+最后这个添加的要在一行内，然后重启即可。
