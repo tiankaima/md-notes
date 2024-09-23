@@ -39,7 +39,7 @@
     -   ReLU (1)
         { .annotate }
 
-        1.  ![](./imgs/relu.png)
+        1.  ![](./imgs/ReLU.png)
 
         $$
         f(x) = \max(0, x)
@@ -56,7 +56,7 @@
     -   Leaky ReLU (1)
         { .annotate }
 
-        1.  ![](./imgs/leaky_relu.png)
+        1.  ![](./imgs/Leaky_ReLU.png)
 
         $$
         f(x) = \begin{cases}
