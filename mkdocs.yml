@@ -34,6 +34,7 @@ nav:
       - math/index.md
       - Analysis:
           - math/analysis/calculus.md
+          - math/analysis/fourier.md
           - math/analysis/functional-analysis.md
       - Probability:
           - math/probability/probability.md
