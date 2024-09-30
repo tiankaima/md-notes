@@ -41,6 +41,9 @@ nav:
           - math/probability/stochastic-processes.md
   - Machine Learning:
       - ml/index.md
+      - Traditional Methods:
+          - Linear Regression: ml/traditional/linear-regression.md
+          - Logistic Regression: ml/traditional/logistic-regression.md
       - Deep Learning:
           - Review: ml/dl/review.md
           - Neural Network:

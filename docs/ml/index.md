@@ -12,8 +12,8 @@
 
 ### [传统机器学习](./traditional/index.md)
 
--   [线性回归](./traditional/lr.md)
--   [逻辑回归](./traditional/lr.md)
+-   [线性回归](./traditional/linear-regression.md)
+-   [逻辑回归](./traditional/logistic-regression.md)
 -   [决策树](./traditional/dt.md)
 -   [支持向量机](./traditional/svm.md)
 -   [朴素贝叶斯](./traditional/nb.md)
@@ -26,8 +26,8 @@
 
 ### [深度学习](./dl/index.md)
 
--   [神经网络](./dl/nn.md)
--   [卷积神经网络](./dl/cnn.md)
+-   [神经网络](./dl/nn/index.md)
+-   [卷积神经网络](./dl/cnn/index.md)
 -   [循环神经网络](./dl/rnn.md)
 -   [自编码器](./dl/autoencoder.md)
 -   [生成对抗网络](./dl/gan.md)
