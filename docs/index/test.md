@@ -41,3 +41,7 @@ graph TD;
 ## Link Test {#link-test}
 
 [Return to Home](../index.md)
+
+## More with [typst-svgs](https://github.com/tiankaima/typst-svgs)
+
+![](https://tiankaima.github.io/typst-svgs/240930fe-demo.svg)
