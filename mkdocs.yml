@@ -36,6 +36,7 @@ nav:
           - math/analysis/calculus.md
           - math/analysis/fourier.md
           - math/analysis/functional-analysis.md
+          - math/analysis/measure-theory.md
       - Probability:
           - math/probability/probability.md
           - math/probability/stochastic-processes.md
