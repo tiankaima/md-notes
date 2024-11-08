@@ -16,6 +16,7 @@ mkdocs-glightbox = "*"
 mkdocs-jupyter = "*"
 mkdocs-material = "*"
 mkdocs-redirects = "*"
+sympy = "*"
 
 [dev-packages]
 

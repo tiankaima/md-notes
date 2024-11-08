@@ -37,6 +37,7 @@ nav:
           - math/analysis/fourier.md
           - math/analysis/functional-analysis.md
           - math/analysis/measure-theory.md
+          - math/analysis/attention-is-all-you-need.md
       - Probability:
           - math/probability/probability.md
           - math/probability/stochastic-processes.md
