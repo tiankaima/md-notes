@@ -21,11 +21,15 @@ nav:
   - Blog:
       - C++:
           - blog/cpp/modern-cpp.md
+      - Lab:
+          - blog/lab/inet.md
+      - Server:
+          - blog/server/headscale.md
+          - blog/server/rpi-setup.md
       - Typst:
           - blog/typst/typst-tutorial-for-latex-user.md
       - Terminal:
           - blog/terminal/cheatsheets.md
-          - blog/terminal/rpi-setup.md
       - USTC:
           - blog/ustc/schoolwork-links.md
           - blog/ustc/ustc-websites.md
@@ -119,6 +123,7 @@ plugins:
   - redirects:
       redirect_maps:
         "blog/xzkd-new-tokens.md": "blog/ustc/xzkd-new-tokens.md"
+        "blog/terminal/rpi-setup.md": "blog/server/rpi-setup.md"
 
 # Customization
 extra:
