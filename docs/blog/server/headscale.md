@@ -8,6 +8,8 @@
 
 ## Control Plane
 
+### Installation
+
 > https://headscale.net/setup/install/official/
 
 1. `$ wget *.deb` (in GitHub Release)
@@ -55,7 +57,7 @@ Paste it in the browser, and you're good to go! (Note how the API key is stored 
 
 ## Client
 
-### Tailscale
+### Installation
 
 Just install it as a normal tailscale setup:
 
@@ -71,7 +73,7 @@ for macOS users, try Homebrew instead of App Store version, which provides you w
 
     You could install a CLI only version with a `tailscale` + `tailscaled`, but why?
 
-### Headscale
+#### Login
 
 To connect to the control plane, use:
 
@@ -81,6 +83,8 @@ To connect to the control plane, use:
 tailscale up --login-server <URL> --authkey <KEY>
 ```
 
+## Features
+
 ### Docker subnet
 
 One great way to use the new intranet you just setup, is to assign a subnet to the docker network for each machine, so each container would have its own IP address, and would perform just as a regular system, without the need to perform port fowarding, rev proxy on host ... etc.
@@ -89,7 +93,7 @@ Here's a step-by-step to show you how to do it:
 
 !!! note
 
-    The headscale assigned `10.60.0.1/24` (?) for the client network in my case, so I'm planning the following address:
+    With defaultd config, headscale will assign `10.60.0.1/24` for the client network, so I'm planning the following address:
 
     - `10.60.0.1` would get a `10.8.1.0/24` subnet
     - `10.60.0.2` would get a `10.8.2.0/24` subnet
@@ -97,15 +101,19 @@ Here's a step-by-step to show you how to do it:
 
     Adjust the following steps according to your own network settings
 
-!!! note
-
-    I'm also just going to modify the default docker network, aka `docker0` instead of a new docker network for simplicity
+#### Modifying default `docker0`
 
 !!! warning
 
-    I should really give you some heads up on this, with the modifying of default bridge network.
+    I should really give you some heads up on this:
 
-    Assigning every docker container to the default bridge network would allow them to communicate with each other freely, leading to potential security risks.
+    - Assigning every docker container to the default bridge network would allow them to communicate with each other freely, leading to potential security risks.
+
+    - With default bridge network, you CAN'T manually assign IP to container, you'll get the following message:
+
+        ```
+        docker: Error response from daemon: invalid config for network bridge: invalid endpoint settings: user specified IP address is supported on user defined networks only
+        ```
 
 !!! note
 
@@ -123,64 +131,140 @@ Here's a step-by-step to show you how to do it:
 
     NOTE: This breaks discovery, so you'll need to use `--link` or `--network` to connect containers again.
 
-!!! note
+Modify `/etc/docker/daemon.json` and add:
 
-    I actually haven't figured out a way to just assign IP for containers in docker-compose or just `docker run`, let me know if you've got a solution.
+```json title="/etc/docker/daemon.json"
+{
+    (...)
+    "bip": "10.8.1.1/24"
+}
+```
 
-    For now, I guess you'll need to `docker ps -a` and then `docker inspect | grep 10.8` to find out
+!!! warning
 
-1.  Docker tweaks:
+    See https://github.com/moby/moby/issues/22638#issuecomment-263932574
 
-    Modify `/etc/docker/daemon.json` and add:
+    Use IP/netmask address, not subnet/netmask address. tl;dr use `.1` not `.0`
 
-    ```json title="/etc/docker/daemon.json"
-    {
-        (...)
-        "bip": "10.8.1.1/24"
-    }
-    ```
+You'll need to restart Docker after this, supposing with `systemd` installation:
 
-    !!! warning
+```bash
+sudo systemctl restart docker
+```
 
-        See https://github.com/moby/moby/issues/22638#issuecomment-263932574
+!!! warning
 
-        Use IP/netmask address, not subnet/netmask address. tl;dr use `.1` not `.0`
+    Docker now have a special `live-restore` option, which would prevent containers from stopping when reloading daemon.
 
-    You'll need to restart Docker after this, supposing with `systemd` installation:
+    In this case this is NOT desired, you must stop all containers for it to assign new IP addresses.
 
-    ```bash
-    sudo systemctl restart docker
-    ```
+#### Create a new subnet
 
-    !!! warning
+```bash title="docker-subnet.sh"
+#!/bin/sh
 
-        Docker now have a special `live-restore` option, which would prevent containers from stopping when reloading daemon.
+set -xe
 
-        In this case this is NOT desired, you must stop all containers for it to assign new IP addresses.
+docker network create \
+        -d bridge \
+        --attachable \
+        --subnet 10.8.1.0/24 \
+        --ip-range 10.8.1.0/24 \
+        --gateway 10.8.1.1 \
+        inet
+```
 
-2.  Enable IP forwarding:
+Attaching docker compose to this network is easy:
 
-    > https://tailscale.com/kb/1019/subnets#connect-to-tailscale-as-a-subnet-router
+```yaml title="docker-compose.yml"
+networks:
+    default:
+        name: inet
+        external: true
+```
 
-    ```bash
-    echo 'net.ipv4.ip_forward = 1' | sudo tee -a /etc/sysctl.d/99-tailscale.conf
-    echo 'net.ipv6.conf.all.forwarding = 1' | sudo tee -a /etc/sysctl.d/99-tailscale.conf
-    sudo sysctl -p /etc/sysctl.d/99-tailscale.conf
-    ```
+With `docker run`, use:
 
-3.  Broadcast Route to Headscale:
+```bash
+docker run --network inet --ip <IP> ****
+```
 
-    ```bash
-    sudo tailscale up --advertise-routes=10.8.1.0/24 --login-server <URL>
-    ```
+#### Enable IP forwarding
 
-    > after a successful login, the authkey param isn't needed anymore
+> https://tailscale.com/kb/1019/subnets#connect-to-tailscale-as-a-subnet-router
 
-4.  Approve the route in the control plane
+```bash
+echo 'net.ipv4.ip_forward = 1' | sudo tee -a /etc/sysctl.d/99-tailscale.conf
+echo 'net.ipv6.conf.all.forwarding = 1' | sudo tee -a /etc/sysctl.d/99-tailscale.conf
+sudo sysctl -p /etc/sysctl.d/99-tailscale.conf
+```
 
-    Again this could be done with the web page, or with the CLI:
+#### Broadcast Route to Headscale
 
-    ```bash
-    sudo headscale routes list
-    sudo headscale routes enable -r <ID>
-    ```
+```bash
+#!/bin/sh
+
+set -xe
+
+tailscale up \
+        --advertise-routes=10.8.1.0/24 \
+        --accept-routes \
+        --login-server=<URL> \
+        --authkey <KEY>
+```
+
+#### Approve the route in the control plane
+
+Again this could be done with the web page, or with the CLI:
+
+```bash
+sudo headscale routes list
+sudo headscale routes enable -r <ID>
+```
+
+### ACL rules
+
+ACL rules enables more detailed control over the network, allowing you to control who can access what, and who can't, with `autoApprovers` you could automatically approve certain routes.
+
+> To use ACLs in headscale, you must edit your config.yaml file. In there you will find a `policy.path` parameter. This will need to point to your ACL file. More info on how these policies are written can be found [here](https://tailscale.com/kb/1018/acls)
+
+```yaml title="/etc/headscale/config.yaml"
+policy:
+    path: /etc/headscale/acl.json
+```
+
+My config as example:
+
+```json title="/etc/headscale/acl.json"
+{
+    "groups": {
+        "group:admin": ["tiankaima"]
+    },
+    "tagOwners": {
+        "tag:tiankaima": ["tiankaima"],
+        "tag:tkm-servers": ["tiankaima"],
+        "tag:lab-servers": ["group:admin"]
+    },
+    "autoApprovers": {
+        "routes": {
+            "10.8.1.0/24": ["tiankaima"],
+            "10.8.2.0/24": ["tiankaima"],
+            "10.8.3.0/24": ["tiankaima"],
+            "10.8.4.0/24": ["tiankaima"],
+            "10.8.5.0/24": ["tiankaima"],
+            "10.10.1.0/24": ["tiankaima"],
+            "10.10.2.0/24": ["tiankaima"],
+            "10.10.3.0/24": ["tiankaima"],
+            "10.10.4.0/24": ["tiankaima"],
+            "10.10.5.0/24": ["tiankaima"]
+        }
+    },
+    "acls": [
+        {
+            "action": "accept",
+            "src": ["tiankaima"],
+            "dst": ["*:*"]
+        }
+    ]
+}
+```
