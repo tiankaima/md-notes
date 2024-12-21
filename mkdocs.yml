@@ -69,6 +69,13 @@ nav:
           - Gaussian Splatting:
               - ml/dl/gs/index.md
               - 3D Gaussian Splatting: ml/dl/gs/3d-gs.md
+  - Lab:
+      - lab/index.md
+      - lab/checklist.md
+      - lab/network.md
+      - Servers:
+          - lab/srv/8x4090.md
+          - lab/srv/8xa6000.md
 
 # Theme
 theme:
