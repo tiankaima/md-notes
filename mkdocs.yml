@@ -43,6 +43,8 @@ nav:
           - math/analysis/measure-theory.md
           - math/analysis/attention-is-all-you-need.md
           - math/analysis/calculus-of-variations.md
+      - Algebra:
+          - math/algebra/quaternion.md
       - Probability:
           - math/probability/probability.md
           - math/probability/stochastic-processes.md
