@@ -2,7 +2,7 @@
 
 -   Undergrad @ [USTC](https://en.ustc.edu.cn/).
 -   Major in Math.
--   Interested in Computer Science, especially in the field of Machine Learning and Artificial Intelligence.
+-   Interested in CS, especially in cs.CV, cs.AI, cs.LG.
 
 ## Social Media
 
@@ -23,34 +23,24 @@ tiankaima [dot] dev [at] gmail [dot] com
 Servers:
 
 -   **cn.server.tiankaima.dev** (China, Tencent Cloud)
-    -   IPv4
 -   **jp.server.tiankaima.dev** (Japan, Vultr)
-    -   IPv4, IPv6
 -   **ustc.server.tiankaima.dev** (USTC)
-    -   IPv4
-    -   Internal Only
 
 Services:
 
+-   **chat.tiankaima.dev** (Nextcloud Chat, Vercel)
+-   **me.tiankaima.dev** (Resume, GitHub Pages)
 -   **bitwarden.tiankaima.dev** (Bitwarden, JP)
--   **blog.tiankaima.dev** (GitHub Pages, now redirecting to **notes.tiankaima.dev**)
--   **chat.tiankaima.dev** (Nextcloud Chat, hosted on Vercel)
--   **me.tiankaima.dev** (GitHub Pages)
-    -   Resume
 -   **mygo.tiankaima.dev** (JP)
-    -   Bang Dream! It's MyGO!!!!!
--   **notes.tiankaima.dev** (GitHub Pages)
-    -   Markdown notes
+-   **notes.tiankaima.dev** (GitHub Pages, THIS)
+    -   **blog.tiankaima.dev** (GitHub Pages, now redirecting to **notes.tiankaima.dev**)
 
 ### **tiankaima.cn**
 
 -   **alist.tiankaima.cn** (AList, CN)
 -   **danmuji.tiankaima.cn** (Mikufans 录播姬，CN)
--   **tiankaima.cn** (CN)
-    -   Resume, 备案用
+-   **tiankaima.cn** (备案用 Resume, CN)
 
 ## SSH Key
 
-[id_rsa.pub](./id_rsa.pub){:download="id_rsa.pub"}
-
-Also available through [GitHub](https://github.com/tiankaima.keys).
+[id_rsa.pub](./id_rsa.pub){:download="id_rsa.pub"}, Also available through [GitHub](https://github.com/tiankaima.keys).
