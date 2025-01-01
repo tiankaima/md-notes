@@ -51,7 +51,7 @@ sudo sed -i 's@//.*archive.ubuntu.com@//mirrors.ustc.edu.cn@g' /etc/apt/sources.
 
 ### 网络配置
 
-以 4090 为例，其网卡有 4 个端口：
+以 8x4090 为例，其网卡有 4 个端口：
 
 ```bash
 (base) tiankaima@srv-8x4090:~$ cat /etc/systemd/network/00-ens20f0.network
