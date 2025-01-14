@@ -16,7 +16,7 @@
 
 !!! note
 
-    IPMI 默认不开启 DHCP，需要手动给本地 Assign 一个 IP 地址，一般设置成 `192.168.1.2`，并附带 Subnet mask: `255.255.255.0`
+    IPMI 默认不开启 DHCP，需要手动给本地 Assign 一个 IP 地址，一般设置成 `192.168.1.2`，使用 Subnet mask: `255.255.255.0`
 
 !!! warning
 
@@ -35,7 +35,7 @@
     tl;dr:
 
     - XX.04 LTS
-    - XX.10 non-LTS 每六个月发行一次，支持九个月
+    - ~~XX.10 non-LTS 每六个月发行一次，支持九个月~~
 
 更换软件源：
 
@@ -195,7 +195,7 @@ sudo apt update
 sudo apt install -y nvidia-container-toolkit
 ```
 
-### docker-daemon.json
+### docker/daemon.json
 
 ```json
 {
@@ -205,8 +205,32 @@ sudo apt install -y nvidia-container-toolkit
             "path": "nvidia-container-runtime"
         }
     },
-    "registry-mirrors": ["https://mirrors.ustc.edu.cn/"]
+    "registry-mirrors": ["https://mirrors.ustc.edu.cn/"],
+    "live-restore": true,
+    "proxies": {
+        "http-proxy": "http://192.168.50.1:7890",
+        "https-proxy": "http://192.168.50.1:7890",
+        "no-proxy": "localhost, 127.0.0.1, ::1, mirrors.ustc.edu.cn"
+    }
 }
+```
+
+!!! note
+
+    `docker/daemon.json` 启用了 `live-restore`，重启 Daemon 不影响容器内进程，这对于调整 `http_proxy` 等需要重启（而不是 reload）的任务至关重要。
+
+    注意，该选项默认关闭，`systemctl restart docker` 之前去确认 `docker info | grep Live` 是否为 `true`，如果为 `false`，也无需 schedule 停机，只需 `systemctl reload docker` 即可。
+
+### /etc/hosts
+
+```
+192.168.51.24   cls2-srv1 # 8x3090
+192.168.51.135  cls2-srv2 # 8x2080ti
+192.168.51.249  cls2-srv3 # 4x2080ti
+192.168.51.158  cls2-srv4 # 4x2080ti
+192.168.51.157  cls2-srv5 # master
+192.168.51.41   cls2-srv6 # 2xa60
+192.168.51.184  cls2-srv7 # 4xtitanxp
 ```
 
 ### unattended-upgrades
