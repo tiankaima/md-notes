@@ -8,6 +8,7 @@ strict: false
 # Repository
 repo_name: "tiankaima/md-notes"
 repo_url: "https://github.com/tiankaima/md-notes"
+edit_uri: https://github.com/tiankaima/md-notes/edit/main/docs/
 
 # Copyright
 copyright: "Copyright &copy; Tiankai Ma"
