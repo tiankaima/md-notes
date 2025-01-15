@@ -109,6 +109,7 @@ theme:
     logo: "material/school"
   features:
     - content.action.edit
+    - content.code.copy
     - navigation.indexes
     - navigation.expand
     - navigation.prune
