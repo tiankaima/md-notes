@@ -71,8 +71,10 @@ nav:
               - 3D Gaussian Splatting: ml/dl/gs/3d-gs.md
   - Lab:
       - lab/index.md
-      - lab/checklist.md
-      - lab/network.md
+      - lab/tutorial.md
+      - Admin:
+        - lab/admin/checklist.md
+        - lab/admin/network.md
       - Servers:
           - lab/srv/8x4090.md
           - lab/srv/8xa6000.md
