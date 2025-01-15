@@ -177,6 +177,17 @@ Unattended-Upgrade::Package-Blacklist {
 
 !!! warning "systemd-networkd 现在自带 dhcp-client, 只需要在配置文件中设置 `DHCP=yes` 即可"
 
+#### NTP
+
+```ini title="/etc/systemd/timesyncd.conf"
+[Time]
+NTP=time.ustc.edu.cn
+```
+
+```bash
+sudo systemctl restart systemd-timesyncd
+```
+
 #### 内网配置
 
 !!! note "只在直连外网的机器上配置 WireGuard"
