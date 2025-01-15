@@ -76,6 +76,7 @@ nav:
       - Admin:
         - lab/admin/checklist.md
         - lab/admin/network.md
+        - lab/admin/upgrading.md
       - Servers:
           - lab/srv/8x4090.md
           - lab/srv/8xa6000.md
