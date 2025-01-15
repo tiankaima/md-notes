@@ -35,6 +35,12 @@
 
 !!! warning "不要使用安装引导界面安装 docker 等，此位置默认使用 snap 安装。"
 
+### Hostname
+
+```bash
+sudo hostnamectl set-hostname cls2-srv1
+```
+
 ### Docker
 
 ```bash
@@ -85,12 +91,18 @@ sudo apt install -y nvidia-container-toolkit
 ### `/etc/hosts`
 
 ```txt title="/etc/hosts"
+10.9.0.2        cls1-srv1 # 8xa6000
+10.9.0.1        cls1-srv2 # 8x4090
+
+10.8.0.16       cls1-srv1 # 8xa6000
+10.8.0.22       cls1-srv2 # 8x4090
+
 192.168.51.24   cls2-srv1 # 8x3090
 192.168.51.135  cls2-srv2 # 8x2080ti
 192.168.51.249  cls2-srv3 # 4x2080ti
 192.168.51.158  cls2-srv4 # 4x2080ti
 192.168.51.157  cls2-srv5 # master
-192.168.51.41   cls2-srv6 # 2xa60
+192.168.51.41   cls2-srv6 # 2a40
 192.168.51.184  cls2-srv7 # 4xtitanxp
 ```
 

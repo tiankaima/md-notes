@@ -77,9 +77,19 @@ nav:
         - lab/admin/checklist.md
         - lab/admin/network.md
         - lab/admin/upgrading.md
-      - Servers:
-          - lab/srv/8x4090.md
-          - lab/srv/8xa6000.md
+      - Cluster 1:
+          - lab/cls1/index.md
+          - lab/cls1/srv1.md
+          - lab/cls1/srv2.md
+      - Cluster 2:
+          - lab/cls2/index.md
+          - lab/cls2/srv1.md
+          - lab/cls2/srv2.md
+          - lab/cls2/srv3.md
+          - lab/cls2/srv4.md
+          - lab/cls2/srv5.md
+          - lab/cls2/srv6.md
+          - lab/cls2/srv7.md
 
 # Theme
 theme:
