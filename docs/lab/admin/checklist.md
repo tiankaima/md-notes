@@ -94,8 +94,8 @@ sudo apt install -y nvidia-container-toolkit
 10.9.0.2        cls1-srv1 # 8xa6000
 10.9.0.1        cls1-srv2 # 8x4090
 
-10.8.0.16       cls1-srv1 # 8xa6000
-10.8.0.22       cls1-srv2 # 8x4090
+192.168.48.199  cls1-srv1 # 8xa6000
+192.168.48.200  cls1-srv2 # 8x4090
 
 192.168.51.24   cls2-srv1 # 8x3090
 192.168.51.135  cls2-srv2 # 8x2080ti
@@ -104,6 +104,17 @@ sudo apt install -y nvidia-container-toolkit
 192.168.51.157  cls2-srv5 # master
 192.168.51.41   cls2-srv6 # 2a40
 192.168.51.184  cls2-srv7 # 4xtitanxp
+```
+
+### `/etc/fstab`
+
+```txt title="/etc/fstab"
+cls1-srv1:/data/cls1-pool1 /data/cls1-pool1 nfs defaults,nofail
+cls1-srv1:/data/cls1-pool2 /data/cls1-pool2 nfs defaults,nofail
+cls1-srv2:/data/cls1-pool3 /data/cls1-pool3 nfs defaults,nofail
+
+cls2-srv5:/data/cls2-pool1 /data/cls2-pool1 nfs defaults,nofail
+cls2-srv5:/data/cls2-pool2 /data/cls2-pool2 nfs defaults,nofail
 ```
 
 ### `Coder` 用户
@@ -259,7 +270,7 @@ PasswordAuthentication no
 重启服务：
 
 ```bash
-sudo systemctl restart sshd
+sudo systemctl restart ssh
 ```
 
 !!! note
