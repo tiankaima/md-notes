@@ -14,7 +14,7 @@
 -   使用如下命令设置代理：
 
     ```bash
-    export http_proxy="http://192.168.50.1:7890";
+    export http_proxy="http://proxy.lab.tiankaima.cn:7890";
     export https_proxy=$http_proxy;
-    export no_proxy="localhost, 127.0.0.1, ::1"
+    export no_proxy="localhost, 127.0.0.1, ::1, *.cn"
     ```
