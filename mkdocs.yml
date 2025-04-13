@@ -22,8 +22,6 @@ nav:
   - Blog:
       - C++:
           - blog/cpp/modern-cpp.md
-      - Lab:
-          - blog/lab/inet.md
       - Server:
           - blog/server/headscale.md
           - blog/server/rpi-setup.md
@@ -71,7 +69,6 @@ nav:
               - ml/dl/gs/index.md
               - 3D Gaussian Splatting: ml/dl/gs/3d-gs.md
   - Lab:
-      - lab/index.md
       - lab/tutorial.md
       - Admin:
         - lab/admin/checklist.md
@@ -79,17 +76,8 @@ nav:
         - lab/admin/upgrading.md
       - Cluster 1:
           - lab/cls1/index.md
-          - lab/cls1/srv1.md
-          - lab/cls1/srv2.md
       - Cluster 2:
           - lab/cls2/index.md
-          - lab/cls2/srv1.md
-          - lab/cls2/srv2.md
-          - lab/cls2/srv3.md
-          - lab/cls2/srv4.md
-          - lab/cls2/srv5.md
-          - lab/cls2/srv6.md
-          - lab/cls2/srv7.md
 
 # Theme
 theme:
