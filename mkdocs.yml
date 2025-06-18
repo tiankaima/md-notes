@@ -76,6 +76,7 @@ nav:
         - lab/admin/upgrading.md
       - Cluster 1:
           - lab/cls1/index.md
+          - lab/cls1/srv2.md
       - Cluster 2:
           - lab/cls2/index.md
 

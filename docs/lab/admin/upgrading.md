@@ -2,7 +2,7 @@
 
 !!! note
 
-    记录服务器升级后的一些注意事项。
+    记录服务器大版本升级后的一些注意事项。
 
 ## Ubuntu 版本更新
 
@@ -10,7 +10,7 @@
 sudo apt update
 sudo apt upgrade -y
 sudo apt dist-upgrade -y
-sudo apt autoremove -y
+sudo apt autoremove --purge -y
 ```
 
 ```bash
