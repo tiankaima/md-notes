@@ -22,6 +22,8 @@ nav:
   - Blog:
       - C++:
           - blog/cpp/modern-cpp.md
+      - Python:
+          - Package Management [EN]: blog/python/packages.md
       - Server:
           - blog/server/headscale.md
           - blog/server/rpi-setup.md
