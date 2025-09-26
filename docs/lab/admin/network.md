@@ -6,16 +6,19 @@
 
 !!! note
 
-    - `jp-2-server` 上也需要另外的 `tailscale` 客户端。
+    - `jp-2-server` 上也需要另外的 Tailscale 客户端。
     - Headscale 使用 Docker 进行管理，升级前后注意备份数据/密钥。
-    - 内网 IP 随机分配，请使用 tailscale 提供的 DNS，或者使用 `tailscale status` 查看 IP。
+    - 内网 IP 随机分配，请使用 Tailscale 提供的 Magic DNS，或者使用 `tailscale status` 查看 IP。
 
-分别在 `cls1` 和 `cls2` 机房的路由器上配置了 `tailscale`，各自分配的 IP 段如下：
+分别在 `cls1` 和 `cls2` 机房的路由器上配置了 Tailscale，各自分配的 IP 段如下（均为静态）：
 
--   `cls1`（1 号学科楼机房）`192.168.48.0/24`
-    -   其中 IPMI 分配地址 `192.168.48.10X`
-    -   `cls1-srvX` 分配地址 `192.168.48.20X` 均为静态分配
--   `cls2`（高新区 1 号学科楼机房）`192.168.50.0/24`
+-   `192.168.48.0/24`: `cls1`（高新区 1 号学科楼机房）
+
+    -   `192.168.48.10X`: IPMI
+    -   `192.168.48.20X`: `cls1-srvX`
+
+-   `192.168.50.0/24`：`cls2`（先研院机房）
+
     -   暂未调整，目前依靠 DHCP 分配 IP，在路由器上进行了固定。
 
 其余设备不再直接接入内网，均通过 Coder 自带的 tailscale 打洞。

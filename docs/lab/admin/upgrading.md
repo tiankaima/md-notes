@@ -28,18 +28,33 @@ sudo do-release-upgrade
 ```ini title="/etc/apt/sources.list.d/ubuntu.sources"
 Types: deb
 URIs: https://mirrors.ustc.edu.cn/ubuntu
-Suites: noble noble-updates noble-backports
-Components: main restricted universe multiverse
-Signed-By: /usr/share/keyrings/ubuntu-archive-keyring.gpg
-
-Types: deb
-URIs: https://mirrors.ustc.edu.cn/ubuntu
-Suites: noble-security
+Suites: noble noble-updates noble-backports noble-security
 Components: main restricted universe multiverse
 Signed-By: /usr/share/keyrings/ubuntu-archive-keyring.gpg
 ```
 
-### Docker-CE
+### 清理
+
+首先列出所有手动安装的包：
+
+```bash
+sudo apt-mark showmanual
+```
+
+关注：
+
+-   `cockpit`
+-   `zerotier-one`
+
+### 清理内核 {#清理内核}
+
+!!! note "不建议切换 `linux-generic` 以外的内核"
+
+重启后修改 `/etc/apt/apt.conf.d/01autoremove` 注释掉 kernel 相关策略。
+
+接着执行 `sudo apt autoremove` 即可。
+
+## Docker-CE
 
 参考 [MirrorZ Help](https://help.mirrorz.org/docker-ce/) 清理原安装。
 
@@ -49,16 +64,9 @@ for pkg in docker.io docker-doc docker-compose podman-docker containerd runc; do
 
 接下来参考 [检查单](/lab/admin/checklist/#docker) 安装 Docker-CE。
 
-### 清理
+## Ubuntu Desktop -> Ubuntu Server
 
-首先列出所有 explicit 的包：
-
-```bash
-sudo apt-mark showmanual
-```
-
-关注：
-
-- `cockpit`
-- `zerotier-one`
-
+-   `sudo apt install ubuntu-server`
+-   `sudo systemctl set-default multi-user.target`
+-   `sudo systemctl reboot`
+-   `sudo apt purge ubuntu-desktop`
