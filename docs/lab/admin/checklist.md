@@ -132,6 +132,13 @@ sudo sed -i 's/http:/https:/g' /etc/apt/sources.list.d/ubuntu.sources
 sudo apt-get update
 ```
 
+### Proxy
+
+```ini title="/etc/apt/apt.conf.d/01-proxy.conf"
+Acquire::http::Proxy "http://proxy.lab.tiankaima.cn:7890";
+Acquire::https::Proxy "http://proxy.lab.tiankaima.cn:7890";
+```
+
 ### nvidia-driver
 
 ```bash
