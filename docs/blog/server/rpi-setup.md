@@ -14,7 +14,7 @@
 
     电源、散热、外壳
 
-    [Rpi Pinout](https://pinout.xyz/pinout/ground), 接了 4(5V) 6(GND) 给风扇。
+    [Rpi Pinout](https://pinout.xyz/pinout/5v_power), 接了 4(5V) 6(GND) 给风扇。
 
     > 也许有时间应该琢磨一下怎么写个脚本，但是听说 Rpi 5 还是挺热的...
 
@@ -42,11 +42,11 @@
 
     因此 [Raspbian 软件源](https://www.raspbian.org/RaspbianRepository) 只提供了 armhf 的软件包，支持 ARMv6+.
 
--   在 Rpi 4+ 后，使用 aarch64 的系统，就不再存在兼容性问题，因此可以直接使用 [配置 Debian 镜像的方法](https://mirrors.ustc.edu.cn/help/debian.html) 来换源。
+- 在 Rpi 4+ 后，使用 aarch64 的系统，就不再存在兼容性问题，因此可以直接使用 [配置 Debian 镜像的方法](https://mirrors.ustc.edu.cn/help/debian.html) 来换源。
 
--   顺带一提，Rpi 还有个自己的额外的软件源在这两者之外，叫 [Raspberrypi](https://archive.raspberrypi.org/debian/), 里面有一些专有的软件包。
+- 顺带一提，Rpi 还有个自己的额外的软件源在这两者之外，叫 [Raspberrypi](https://archive.raspberrypi.org/debian/), 里面有一些专有的软件包。
 
--   ~~研究了一圈之后还顺手交了个 [PR](https://github.com/ustclug/mirrorhelp/pull/265)~~
+- ~~研究了一圈之后还顺手交了个 [PR](https://github.com/ustclug/mirrorhelp/pull/265)~~
 
 ```bash
 sudo sed -i 's/deb.debian.org/mirrors.ustc.edu.cn/g' /etc/apt/sources.list
@@ -160,7 +160,7 @@ Commit message template: (Strip `#` in the first line)
 
 ### shorthands
 
--   Extend `$HOME/.zsh_history` size
+- Extend `$HOME/.zsh_history` size
 
     ```bash title="$HOME/.zshrc"
     export HISTFILE="$HOME/.zsh_history"
@@ -169,7 +169,7 @@ Commit message template: (Strip `#` in the first line)
     setopt EXTENDED_HISTORY
     ```
 
--   aliases:
+- aliases:
 
     ```bash title="$HOME/.zshrc"
     alias v=nvim
@@ -178,7 +178,7 @@ Commit message template: (Strip `#` in the first line)
     alias bat=batcat
     ```
 
--   shell functions:
+- shell functions:
 
     Watch the latest GitHub Actions run:
 
@@ -298,7 +298,7 @@ sudo umount /mnt/data
 
 UAS: USB Attached Storage; 在 Rpi 上外接了一个 12 TB 的盘，挂在 USB 3.0 上，但是 UAS 的挂载模式似乎有些问题，而且长时间没修，参考：
 
--   rpi/linux [#5060](https://github.com/raspberrypi/linux/issues/5060) [#5737](https://github.com/raspberrypi/linux/issues/5737) [#3404](https://github.com/raspberrypi/linux/issues/3404)
+- rpi/linux [#5060](https://github.com/raspberrypi/linux/issues/5060) [#5737](https://github.com/raspberrypi/linux/issues/5737) [#3404](https://github.com/raspberrypi/linux/issues/3404)
 
 Sadly 我其实到现在都不理解到底是哪里出了问题，`dmesg` 会先提示一段时间的读写错误：
 

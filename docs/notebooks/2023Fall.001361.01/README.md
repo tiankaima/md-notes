@@ -13,3 +13,4 @@
 | Week 10 | 2023.11.07 | [Notebook](./week10.nb) |
 | Week 11 | 2023.11.14 | [Notebook](./week11.nb) |
 | Week 12 | 2023.11.21 | [Notebook](./week12.nb) |
+| Final | 2023.12.05 | [Notebook](./final/final.nb) |

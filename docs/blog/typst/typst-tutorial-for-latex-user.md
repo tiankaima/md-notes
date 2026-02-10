@@ -52,7 +52,7 @@ LaTeX 使用 `\section` 命令创建章节标题。多级标题分别用 `\subse
 | :-------------- | :------------------------------- | :--------------------- | :--------- |
 | 着重强调        | `\textbf{strong}`                | `[*strong*]`           | `strong`   |
 | 强调            | `\emph{emphasis}`                | `[_emphasis_]`         | `emph`     |
-| 等宽文字 / 代码 | `\texttt{print(1)}`              | `` [`print(1)`] ``     | `raw`      |
+| 等宽文字 / 代码 | `\texttt{print(1)}`              | ``[`print(1)`]``       | `raw`      |
 | 链接            | `\url{https://typst.app}`        | `[https://typst.app/]` | `link`     |
 | 标签            | `\label{intro}`                  | `[<intro>]`            | `label`    |
 | 交叉引用        | `\ref{intro}`                    | `[@intro]`             | `ref`      |
@@ -159,7 +159,7 @@ And finally a little loop:
 
 多数情况，你会想要向函数传递一些 内容块。
 例如，在 LaTeX 中的命令 `\underline{Alternative A}`, 在 Typst 中可以写成 `#underline([Alternative A])`.
-方括号表示其中的值是一个[内容块](content)。
+方括号表示其中的值是一个 内容块 (content)。
 在这些方括号中，你可以使用正常的标记语法。不过这样写的话，需要的括号还是太多了，因此你可以把「位于尾部的内容块」移到括号外（如果没有其他参数，可以忽略 `()`）：
 
 ```typst
@@ -238,7 +238,7 @@ Good results can only be obtained by
 `+` 是调用 `{enum}` 函数的语法糖（可以把它看作是一种简写），我们在上面应用了一个 set rule。
 从这个意义上讲，大多数的特殊语法都是只是某一个函数的简写。
 如果你需要重新定义一个组件的样式（仅修改传递参数无法实现），你可以通过 show rule 完全重定义其样式
-（与 LaTeX 中 `\renewcommand` 相似，类似于定义了一个*宏*）.
+（与 LaTeX 中 `\renewcommand` 相似，类似于定义了一个_宏_）.
 
 你可以通过 `font`, `style`, 和 `weight` 参数
 来实现 LaTeX 命令 `\textbf`, `\textsf`, `\rmfamily`, `\mdseries`, 和 `\itshape` 的效果。
@@ -497,12 +497,12 @@ $ mat(
 
 下面是一个示例：
 
--   设置宽 边距
--   启用 两端对齐，更紧密的行间距
-    和 首行缩进
--   设置 字体 为 "New Computer Modern"，这是一个适用于文本和 代码块 的 OpenType 变体
--   禁用段落 间距
--   增加 标题 周围的 间距
+- 设置宽 边距
+- 启用 两端对齐，更紧密的行间距
+  和 首行缩进
+- 设置 字体 为 "New Computer Modern"，这是一个适用于文本和 代码块 的 OpenType 变体
+- 禁用段落 间距
+- 增加 标题 周围的 间距
 
 ```typ
 #set page(margin: 1.75in)
@@ -526,7 +526,7 @@ Typst 使用引文样式语言（Citation Style Language）来定义和处理引
 你可以通过相同的语法 `[@key]` 来引用参考文献中的条目或者引用文档中的标签（这将引用一个名为 `key` 的条目）。
 或者，你可以使用 `cite` 函数。
 
-你可以使用 [`[#cite(<key>, form: "prose")]`]($cite.form) 来引用你的引文的其他形式，比如仅年份或者用于自然语言的引文（类似于 `\citet` 和 `\textcite`）。
+你可以使用 `[#cite(<key>, form: "prose")]` 来引用你的引文的其他形式，比如仅年份或者用于自然语言的引文（类似于 `\citet` 和 `\textcite`）。
 
 你可以在 `bibliography` 函数的文档页面上找到更多信息。
 
@@ -544,10 +544,10 @@ Typst 使用引文样式语言（Citation Style Language）来定义和处理引
 对于大多数人，Typst 现在已经是一个很好的 LaTeX 替代品。
 然而，如果你是一个重度 LaTeX 用户，你可能会发现 Typst 还缺少一些功能：
 
--   **原生图表和绘图。** LaTeX 用户通常会在 PGF/TikZ 中创建图表。Typst 目前还没有包含绘图工具，但社区正在提供解决方案，比如 [`cetz`](https://github.com/johannes-wolf/typst-canva)。你可以将这些添加到你的文档中绘制图表。
+- **原生图表和绘图。** LaTeX 用户通常会在 PGF/TikZ 中创建图表。Typst 目前还没有包含绘图工具，但社区正在提供解决方案，比如 [`cetz`](https://github.com/johannes-wolf/typst-canva)。你可以将这些添加到你的文档中绘制图表。
 
--   **更改页面边距而不换页。** 在 LaTeX 中，你可以在不换页的前提下，调整页边距。你可以使用 `page` 函数，但这将强制换页。如果你只是需要调整几个段落的边距，你可以使用 `pad` 函数 来进行负填充。
+- **更改页面边距而不换页。** 在 LaTeX 中，你可以在不换页的前提下，调整页边距。你可以使用 `page` 函数，但这将强制换页。如果你只是需要调整几个段落的边距，你可以使用 `pad` 函数 来进行负填充。
 
--   **以图片的形式插入 PDF。** 在 LaTeX 中，将矢量图形作为 PDF 或 EPS 文件插入已经成为一种惯例。Typst 不支持以图片形式读取这两个格式，但你可以使用 [在线工具](https://cloudconvert.com/pdf-to-svg) 或 [Inkscape](https://inkscape.org/) 将它们转换为 SVG 文件。Web app 会在上传 PDF 文件时自动将其转换为 SVG 文件。
+- **以图片的形式插入 PDF。** 在 LaTeX 中，将矢量图形作为 PDF 或 EPS 文件插入已经成为一种惯例。Typst 不支持以图片形式读取这两个格式，但你可以使用 [在线工具](https://cloudconvert.com/pdf-to-svg) 或 [Inkscape](https://inkscape.org/) 将它们转换为 SVG 文件。Web app 会在上传 PDF 文件时自动将其转换为 SVG 文件。
 
--   **换页符优化。** LaTeX 的算法会智能优化换行符和换页符。Typst 虽然会避免孤行的出现，它所使用的算法远远不及 LaTeX 所使用的复杂。你可以在提交前，插入自定义的换页符：`#pagebreak(weak: true)` 。参数 `weak` 会保证：如果这里本来就该是很自然的换页，不会插入两个换页符，你也可以使用 `#v(1fr)` 在页面中插入一些空白。这点和 LaTeX 的 `\vfill` 相似。
+- **换页符优化。** LaTeX 的算法会智能优化换行符和换页符。Typst 虽然会避免孤行的出现，它所使用的算法远远不及 LaTeX 所使用的复杂。你可以在提交前，插入自定义的换页符：`#pagebreak(weak: true)` 。参数 `weak` 会保证：如果这里本来就该是很自然的换页，不会插入两个换页符，你也可以使用 `#v(1fr)` 在页面中插入一些空白。这点和 LaTeX 的 `\vfill` 相似。

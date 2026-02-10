@@ -54,7 +54,7 @@ $$
 \prod_{p \in \text{prime}}\frac{1}{1-p^{-2}} = \sum_{n=1}^{\infty} \frac{1}{n^2} = \zeta(2) = \frac {\pi^2}{6}
 $$
 
-$\zeta(2)$ 的计算可以 [参考](/math/analysis/fourier/#zeta2), 原问题的答案是：
+$\zeta(2)$ 的计算可以 [参考](../analysis/fourier.md#zeta2), 原问题的答案是：
 
 $$
 \left(\prod_{p \in \text{prime}}\frac{1}{1-p^{-2}} \right)^{-1} = \zeta(2)^{-1} = \frac{6}{\pi^2}

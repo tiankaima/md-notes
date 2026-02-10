@@ -1,6 +1,6 @@
-# 功能测试
+# Test
 
-## 数学公式
+## Equation
 
 $$
 \begin{align*}
@@ -8,7 +8,7 @@ $$
 \end{align*}
 $$
 
-## 代码
+## Code
 
 ```python hl_lines="1 4"
 def f(x):
@@ -17,18 +17,18 @@ def f(x):
 print(f(3))
 ```
 
-## 表格
+## Table
 
 | 1   | 2   | 3   |
 | --- | --- | --- |
 | 4   | 5   | 6   |
 | 7   | 8   | 9   |
 
-## 图片
+## Image
 
 ![Image](../images/background.jpeg){ #loading=lazy }
 
-## Mermaid 流程图
+## Mermaid
 
 ```mermaid
 graph TD;
@@ -44,4 +44,4 @@ graph TD;
 
 ## More with [typst-svgs](https://github.com/tiankaima/typst-svgs)
 
-![](https://tiankaima.github.io/typst-svgs/240930fe-demo.svg)
+![240930fe-demo.svg](https://tiankaima.github.io/typst-svgs/240930fe-demo.svg)

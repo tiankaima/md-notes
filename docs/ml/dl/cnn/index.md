@@ -4,7 +4,7 @@ Convolutional Neural Network，卷积神经网络。
 
 !!! notes "前置知识"
 
-    - [神经网络](../nn)
+    - [神经网络](../nn/index.md)
 
 ## 概念 {#concept}
 
@@ -32,7 +32,7 @@ Convolutional Neural Network，卷积神经网络。
 
 ??? note "前置知识：卷积运算"
 
-    关于卷积运算本身详见 [Functional-Analysis#convolution](/math/analysis/functional-analysis/#convolution), 下面讨论卷积在神经网络中的应用。
+    关于卷积运算本身详见 [Functional-Analysis#convolution](../../../math/analysis/functional-analysis.md#convolution), 下面讨论卷积在神经网络中的应用。
 
     tl;dr: 在下文中用到的离散卷积定义如下, 若 $f$ 和 $g$ 是长度为 $n$ 的序列, 则它们的卷积 $f * g$ 定义为
 
