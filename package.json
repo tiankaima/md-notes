@@ -1,0 +1,6 @@
+{
+  "dependencies": {
+    "markdownlint-cli2": "^0.20.0",
+    "mkdocs-material-linter": "^1.5.3"
+  }
+}

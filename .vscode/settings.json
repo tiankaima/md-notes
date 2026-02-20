@@ -1,5 +1,23 @@
 {
-    "[markdown]": {
-        "editor.defaultFormatter": "esbenp.prettier-vscode",
-    },
+	"[markdown]": {
+		"editor.defaultFormatter": "DavidAnson.vscode-markdownlint"
+	},
+	"markdownlint.customRules": ["mkdocs-material-linter"],
+	"markdownlint.config": {
+		"default": true,
+		"MD007": {
+			"indent": 4
+		},
+		"material-admonition-types": true,
+		"material-admonition-indentation": true,
+		"material-admonition-empty": true,
+		"material-admonition-empty-title": true,
+		"material-code-annotations": true,
+		"material-content-tabs": true,
+		"material-navigation-structure": true,
+		"material-shell-language-standardization": true,
+		"material-bundle-exec-shell-type": true,
+		"material-blank-lines-spacing": true,
+		"material-code-block-syntax": true
+	}
 }

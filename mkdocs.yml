@@ -16,9 +16,9 @@ copyright: "Copyright &copy; Tiankai Ma"
 # Contents
 nav:
   - Welcome:
-      - Welcome [EN]: index.md
-      - About [EN]: index/about.md
-      - Test Page: index/test.md
+      - index.md
+      - index/about.md
+      - index/test.md
   - Blog:
       - C++:
           - blog/cpp/modern-cpp.md
@@ -57,6 +57,7 @@ nav:
           - Neural Network:
               - ml/dl/nn/index.md
               - Backward Propagation: ml/dl/nn/bp.md
+              - Latest: ml/dl/nn/latest.md
               - Playground/MNIST: ml/dl/nn/playground-mnist.ipynb
               - Miscellaneous:
                   - Derivative: ml/dl/nn/derivative.md
@@ -70,15 +71,53 @@ nav:
           - Gaussian Splatting:
               - ml/dl/gs/index.md
               - 3D Gaussian Splatting: ml/dl/gs/3d-gs.md
+  - Notebooks:
+      - notebooks/README.md
+      - 数学实验 (001108.01):
+          - notebooks/2023Fall.001108.01/README.md
+          - Lecture 01: notebooks/2023Fall.001108.01/week_1/notebooks/lecture_01.ipynb
+          - Lecture 02: notebooks/2023Fall.001108.01/week_1/notebooks/lecture_02.ipynb
+          - Lecture 05: notebooks/2023Fall.001108.01/week_2/notebooks/lecture_05.ipynb
+          - Lecture 06: notebooks/2023Fall.001108.01/week_3/notebooks/lecture_06.ipynb
+          - Lecture 07: notebooks/2023Fall.001108.01/week_3/notebooks/lecture_07.ipynb
+          - Lecture 08: notebooks/2023Fall.001108.01/week_3/notebooks/lecture_08.ipynb
+          - Lecture 12: notebooks/2023Fall.001108.01/week_4/notebooks/lecture_12.ipynb
+          - Archive:
+              - Lecture 09: notebooks/2023Fall.001108.01/week_4/archive/notebooks/lecture_09py.ipynb
+              - Lecture 10: notebooks/2023Fall.001108.01/week_4/archive/notebooks/lecture_10py.ipynb
+              - Lecture 12: notebooks/2023Fall.001108.01/week_4/archive/notebooks/lecture_12py.ipynb
+          - Project 1:
+              - Project 1: notebooks/2023Fall.001108.01/project_1/project_1.ipynb
+              - Archive: notebooks/2023Fall.001108.01/project_1/archive/project_1py.ipynb
+      - 符号计算软件 (001361.01):
+          - notebooks/2023Fall.001361.01/README.md
+          - Week 1: notebooks/2023Fall.001361.01/archive/week_1.ipynb
+          - Week 4: notebooks/2023Fall.001361.01/archive/week_4.ipynb
+      - 微分几何 (Math3009.01):
+          - notebooks/2023Fall.Math3009.01/README.md
+          - Chapter 1: notebooks/2023Fall.Math3009.01/chapter1.ipynb
+          - Chapter 2: notebooks/2023Fall.Math3009.01/chapter2.ipynb
+      - 微分方程引论 (Math3012.01):
+          - notebooks/2023Fall.Math3012.01/README.md
+          - Week 1: notebooks/2023Fall.Math3012.01/week_1.ipynb
+          - Week 2: notebooks/2023Fall.Math3012.01/week_2.ipynb
+      - tmp:
+          - 2023-09-08: notebooks/tmp/20230908.ipynb
+          - 2023-10-03: notebooks/tmp/20231003.ipynb
+          - 2023-11-10: notebooks/tmp/20231110.ipynb
+          - 2023-11-10: notebooks/tmp/20231110py.ipynb
   - Lab:
       - lab/tutorial.md
+      - lab/proxy.md
+      - lab/coder.md
       - Admin:
           - lab/admin/network.md
-          - lab/admin/cls1-gateway.md
-
+          - lab/admin/services.md
           - lab/admin/checklist.md
-          - lab/admin/upgrading.md
-
+      - Maintenance:
+          - lab/maintenance/log.md
+          - lab/maintenance/sssd.md
+          - lab/maintenance/cleanup.md
 # Theme
 theme:
   name: material
@@ -130,7 +169,11 @@ plugins:
   - search
   - git-revision-date-localized
   - glightbox
-  - mkdocs-jupyter
+  - mkdocs-jupyter:
+      execute: false
+      allow_errors: true
+      include_requirejs: true
+      custom_mathjax_url: "https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS_CHTML-full,Safe"
   - redirects:
       redirect_maps:
         "blog/xzkd-new-tokens.md": "blog/ustc/xzkd-new-tokens.md"

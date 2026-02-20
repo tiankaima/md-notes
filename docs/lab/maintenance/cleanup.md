@@ -1,19 +1,13 @@
-# 更新
+# 清理 Ubuntu 安装
 
-!!! note
-
-    记录服务器大版本升级后的一些注意事项。
-
-## Ubuntu 版本更新
-
-```bash
+```shell
 sudo apt update
 sudo apt upgrade -y
 sudo apt dist-upgrade -y
 sudo apt autoremove --purge -y
 ```
 
-```bash
+```shell
 sudo do-release-upgrade
 ```
 
@@ -37,14 +31,14 @@ Signed-By: /usr/share/keyrings/ubuntu-archive-keyring.gpg
 
 首先列出所有手动安装的包：
 
-```bash
+```shell
 sudo apt-mark showmanual
 ```
 
 关注：
 
--   `cockpit`
--   `zerotier-one`
+- `cockpit`
+- `zerotier-one`
 
 ### 清理内核 {#清理内核}
 
@@ -58,15 +52,15 @@ sudo apt-mark showmanual
 
 参考 [MirrorZ Help](https://help.mirrorz.org/docker-ce/) 清理原安装。
 
-```bash
+```shell
 for pkg in docker.io docker-doc docker-compose podman-docker containerd runc; do sudo apt-get remove $pkg; done
 ```
 
-接下来参考 [检查单](/lab/admin/checklist/#docker) 安装 Docker-CE。
+接下来参考 [检查单](../admin/checklist.md#docker-ce) 安装 Docker-CE。
 
 ## Ubuntu Desktop -> Ubuntu Server
 
--   `sudo apt install ubuntu-server`
--   `sudo systemctl set-default multi-user.target`
--   `sudo systemctl reboot`
--   `sudo apt purge ubuntu-desktop`
+- `sudo apt install ubuntu-server`
+- `sudo systemctl set-default multi-user.target`
+- `sudo systemctl reboot`
+- `sudo apt purge ubuntu-desktop`

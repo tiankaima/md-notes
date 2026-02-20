@@ -1,0 +1,30 @@
+{
+  "globs": [
+    "README.md",
+    "docs/**/*.md"
+  ],
+  "ignores": [
+    "site/**",
+    "node_modules/**"
+  ],
+  "customRules": [
+    "mkdocs-material-linter"
+  ],
+  "config": {
+    "default": true,
+    "MD007": {
+      "indent": 4
+    },
+    "material-admonition-types": true,
+    "material-admonition-indentation": true,
+    "material-admonition-empty": true,
+    "material-admonition-empty-title": true,
+    "material-code-annotations": true,
+    "material-content-tabs": true,
+    "material-navigation-structure": true,
+    "material-shell-language-standardization": true,
+    "material-bundle-exec-shell-type": true,
+    "material-blank-lines-spacing": true,
+    "material-code-block-syntax": true
+  }
+}

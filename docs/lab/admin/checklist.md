@@ -2,25 +2,25 @@
 
 ## 硬件检查
 
--   [x] CPU、GPU 是否正常，符合配置
--   [x] RAM 总量、通道配置
--   [x] 硬盘容量、RAID 配置
--   [x] 网卡是否正常，速度
--   [x] IPMI 能否正常访问
+- [x] CPU、GPU 是否正常，符合配置
+- [x] RAM 总量、通道配置
+- [x] 硬盘容量、RAID 配置
+- [x] 网卡是否正常，速度
+- [x] IPMI 能否正常访问
 
 ### IPMI
 
--   IPMI 默认不开启 DHCP，需要手动给本地 Assign 一个 IP 地址：
+- IPMI 默认不开启 DHCP，需要手动给本地 Assign 一个 IP 地址：
 
-    -   IP: `192.168.1.2`
-    -   Subnet mask: `255.255.255.0`
+    - IP: `192.168.1.2`
+    - Subnet mask: `255.255.255.0`
 
--   登陆 IPMI 默认用户名密码：
+- 登陆 IPMI 默认用户名密码：
 
-    -   用户名：`ADMIN`
-    -   密码：`ADMIN`
+    - 用户名：`ADMIN`
+    - 密码：`ADMIN`
 
--   **登陆 IPMI 后修改默认密码**
+- **登陆 IPMI 后修改默认密码**
 
 ## 系统安装
 
@@ -82,25 +82,23 @@ network:
                     proxy._: ""
 ```
 
-## 管理设置
+## Hostname
 
-### Hostname
-
-```bash
+```shell
 sudo hostnamectl set-hostname cls1-srv1
 ```
 
-### 禁用休眠
+## 禁用休眠
 
-```bash
+```shell
 sudo systemctl mask sleep.target suspend.target hibernate.target hybrid-sleep.target
 ```
 
-### `Coder` 用户
+## `Coder` 用户
 
 为方便集中管理，创建一个 `coder` 用户：
 
-```bash
+```shell
 sudo useradd -m -s /bin/bash coder
 sudo usermod -aG docker coder
 sudo passwd -d coder
@@ -110,21 +108,19 @@ sudo passwd -d coder
 ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIKTjL65H2yhJPN6PYUp6DQ9wxeQLT1FsC9VPhTaes892
 ```
 
-### Docker Socket 挂载
+## Docker Socket 挂载
 
-在 cls1-gateway 上将当前机器的 `/var/run/docker.sock` 挂载到 `/var/run/docker/$HOSTNAME.sock`，以便 Coder 可以访问 Docker，更多[技术细节](./cls1-gateway.md#docker-socket)：
+在 cls1-gateway 上将当前机器的 `/var/run/docker.sock` 挂载到 `/var/run/docker/$HOSTNAME.sock`，以便 Coder 可以访问 Docker，更多[技术细节](./services.md#docker-socket)：
 
-```bash
+```shell
 sudo systemctl enable --now docker-tunnel@$HOSTNAME
 ```
 
-## APT 源
-
-### 换源
+## APT 换源
 
 <https://mirrors.ustc.edu.cn/help/ubuntu.html>
 
-```bash
+```shell
 sudo sed -i 's@//.*archive.ubuntu.com@//mirrors.ustc.edu.cn@g' /etc/apt/sources.list.d/ubuntu.sources
 sudo sed -i 's/security.ubuntu.com/mirrors.ustc.edu.cn/g' /etc/apt/sources.list.d/ubuntu.sources
 sudo sed -i 's/http:/https:/g' /etc/apt/sources.list.d/ubuntu.sources
@@ -132,35 +128,37 @@ sudo sed -i 's/http:/https:/g' /etc/apt/sources.list.d/ubuntu.sources
 sudo apt-get update
 ```
 
-### Proxy
+## APT Proxy
 
 ```ini title="/etc/apt/apt.conf.d/01-proxy.conf"
 Acquire::http::Proxy "http://proxy.lab.tiankaima.cn:7890";
 Acquire::https::Proxy "http://proxy.lab.tiankaima.cn:7890";
 ```
 
-### nvidia-driver
+## nvidia-driver
 
-```bash
+```shell
 sudo apt-get install nvidia-driver-570-server -y
 ```
 
-### docker-ce
+## docker-ce
 
 <https://mirrors.ustc.edu.cn/help/docker-ce.html>
 
-```bash
+```shell
 curl -fsSL https://get.docker.com -o get-docker.sh
 sudo DOWNLOAD_URL=https://mirrors.ustc.edu.cn/docker-ce sh get-docker.sh
 ```
 
-!!! note "在 A6000 上 `nvidia-driver-570-server-open` 驱动存在问题，更改为闭源驱动解决"
+!!! note
 
-### libnvidia-container
+    在 A6000 上 `nvidia-driver-570-server-open` 驱动存在问题，更改为闭源驱动 `nvidia-driver-570-server` 解决
+
+## libnvidia-container
 
 <https://mirrors.ustc.edu.cn/help/libnvidia-container.html>
 
-```bash
+```shell
 curl -fsSL https://nvidia.github.io/libnvidia-container/gpgkey | sudo gpg --dearmor -o /usr/share/keyrings/nvidia-container-toolkit-keyring.gpg \
  && curl -s -L https://mirrors.ustc.edu.cn/libnvidia-container/stable/deb/nvidia-container-toolkit.list | \
     sed 's#deb https://nvidia.github.io#deb [signed-by=/usr/share/keyrings/nvidia-container-toolkit-keyring.gpg] https://mirrors.ustc.edu.cn#g' | \
@@ -170,13 +168,15 @@ sudo apt-get update
 sudo apt-get install nvidia-container-toolkit -y
 ```
 
-### DOCA
+## DOCA
 
 <https://developer.nvidia.com/doca-downloads>
 
-!!! note "`3.1.0` -> `latest-2.9-LTS` to ensure compatibility"
+!!! note
 
-```bash
+    Changing DOCA version from `3.1.0` -> `latest-2.9-LTS` to ensure compatibility
+
+```shell
 export DOCA_URL="https://linux.mellanox.com/public/repo/doca/latest-2.9-LTS/ubuntu24.04/x86_64/"
 BASE_URL=$([ "${DOCA_PREPUBLISH:-false}" = "true" ] && echo https://doca-repo-prod.nvidia.com/public/repo/doca || echo https://linux.mellanox.com/public/repo/doca)
 DOCA_SUFFIX=${DOCA_URL#*public/repo/doca/}; DOCA_URL="$BASE_URL/$DOCA_SUFFIX"
@@ -189,11 +189,11 @@ sudo apt-get install doca-ofed -y
 
 <!-- TODO: 补充 IPoIB 配置方法 -->
 
-### BeeGFS
+## BeeGFS
 
 <https://doc.beegfs.io/latest/quick_start_guide/quick_start_guide.html>
 
-```bash
+```shell
 sudo wget https://www.beegfs.io/release/beegfs_8.1/gpg/GPG-KEY-beegfs -O /etc/apt/trusted.gpg.d/beegfs.asc
 sudo wget https://www.beegfs.io/release/beegfs_8.1/dists/beegfs-noble.list -O /etc/apt/sources.list.d/beegfs.list
 
@@ -206,7 +206,7 @@ sudo apt-get install beegfs-client beegfs-tools beegfs-utils -y
 
 <!-- TODO: 补充 BeeGFS 设置、调优 -->
 
-### OpenZFS (by Zabbly)
+## OpenZFS (Zabbly)
 
 <https://github.com/zabbly/zfs>
 
@@ -219,7 +219,7 @@ Architectures: amd64
 Signed-By: /etc/apt/keyrings/zabbly.asc
 ```
 
-```bash
+```shell
 sudo wget -q https://pkgs.zabbly.com/key.asc -O /etc/apt/keyrings/zabbly.asc
 
 sudo apt-get update
@@ -228,13 +228,11 @@ sudo apt-get install openzfs-zfsutils openzfs-zfs-dkms openzfs-zfs-initramfs -y
 
 <!-- TODO: 补充 ZFS 设置、调优 -->
 
-## APT 设置
-
-### unattended-upgrades
+## unattended-upgrades
 
 由于实验室所有程序均运行在 Docker 环境中，除显卡驱动外，宿主环境可以开启全量自动更新。
 
-```bash
+```shell
 sudo apt-get install unattended-upgrades -y
 sudo dpkg-reconfigure -plow unattended-upgrades
 ```
@@ -248,41 +246,39 @@ Unattended-Upgrade::Package-Blacklist {
 }
 ```
 
-### autoremove
+## autoremove
 
-[（可选）允许 autoremove 清理内核](./upgrading.md#清理内核)
+[（可选）允许 autoremove 清理内核](../maintenance/cleanup.md#清理内核)
 
-## `/etc/` 配置
-
-### `/etc/docker/daemon.json`
+## `/etc/docker/daemon.json`
 
 <https://mirrors.ustc.edu.cn/help/dockerhub.html>
 
 ```json
 {
-	"runtimes": {
-		"nvidia": {
-			"args": [],
-			"path": "nvidia-container-runtime"
-		}
-	},
-	"registry-mirrors": ["https://mirrors.ustc.edu.cn/"],
-	"live-restore": true,
-	"proxies": {
-		"http-proxy": "http://proxy.lab.tiankaima.cn:7890",
-		"https-proxy": "http://proxy.lab.tiankaima.cn:7890",
-		"no-proxy": "localhost,127.0.0.1,::1,mirrors.ustc.edu.cn"
-	}
+ "runtimes": {
+  "nvidia": {
+   "args": [],
+   "path": "nvidia-container-runtime"
+  }
+ },
+ "registry-mirrors": ["https://mirrors.ustc.edu.cn/"],
+ "live-restore": true,
+ "proxies": {
+  "http-proxy": "http://docker.proxy.lab.tiankaima.cn:7890",
+  "https-proxy": "http://docker.proxy.lab.tiankaima.cn:7890",
+  "no-proxy": "localhost,127.0.0.1,::1,mirrors.ustc.edu.cn"
+ }
 }
 ```
 
 !!! note
 
-    - 默认情况下，restart Docker Daemon 会导致所有容器内进程被杀死，`live-restore` 选项可以避免这种情况。
+    - 默认情况下，重启 Docker Daemon（`systemctl restart docker`）会导致所有容器内进程被杀死，启用 `live-restore` 选项可以避免这种情况。
     - `live-restore` 选项默认关闭，可以在修改 `/etc/docker/daemon.json` 后执行 `sudo systemctl reload docker` 使其生效。
     - 修改 `proxies` 选项后需要执行 `sudo systemctl restart docker` 使其生效，如果此时有容器正在运行，请通过 `docker info | grep Live` 确认 `Live Restore` 是否为 `true`，如果为 `false`，请先按上面的过程启用 `live-restore`。
 
-### `/etc/hosts`
+## `/etc/hosts`
 
 ```txt title="/etc/hosts"
 127.0.0.1       localhost
@@ -315,7 +311,7 @@ Unattended-Upgrade::Package-Blacklist {
 202.38.64.59 wlt.ustc.edu.cn
 ```
 
-### `/etc/fstab`
+## `/etc/fstab`
 
 !!! note "OpenZFS/BeeGFS 均不存放于此"
 
@@ -330,25 +326,23 @@ cls2-srv5:/data/cls2-pool1 /data/cls2-pool1 nfs defaults,nofail
 cls2-srv5:/data/cls2-pool2 /data/cls2-pool2 nfs defaults,nofail
 ```
 
-```bash
+```shell
 sudo systemctl daemon-reload
 sudo mount -a
 ```
 
-### `/etc/systemd/timesyncd.conf`
+## `/etc/systemd/timesyncd.conf`
 
 ```ini title="/etc/systemd/timesyncd.conf"
 [Time]
 NTP=time.ustc.edu.cn
 ```
 
-```bash
+```shell
 sudo systemctl restart systemd-timesyncd
 ```
 
-## 安全设置
-
-### ssh
+## SSH
 
 ```txt title="/etc/ssh/sshd_config"
 PermitRootLogin no
@@ -357,7 +351,7 @@ PasswordAuthentication no
 
 重启服务：
 
-```bash
+```shell
 sudo systemctl restart ssh
 ```
 
@@ -371,9 +365,9 @@ sudo systemctl restart ssh
     Match all
     ```
 
-### fail2ban
+## fail2ban
 
-```bash
+```shell
 sudo apt install fail2ban
 ```
 
@@ -391,19 +385,19 @@ bantime = 3600
 
 启动 & 检查：
 
-```bash
+```shell
 sudo systemctl restart fail2ban
 sudo fail2ban-client status
 ```
 
-### ufw
+## ufw
 
 暂无
 
-### iptables/nftables
+## iptables/nftables
 
 暂无
 
 ## 监控
 
-参照 [cls1-gateway/监控](./cls1-gateway.md#监控) 配置。
+参照 [服务总览/监控](./services.md#infra-monitoring) 配置。
