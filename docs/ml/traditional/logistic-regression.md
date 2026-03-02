@@ -41,7 +41,7 @@ $$
 
 与 Linear Regression 的部分类似，我们同样提供两种等价的视角来得到 $\theta$ 的最优解。
 
--   MLE: 极大似然估计
+- MLE: 极大似然估计
 
     对于样本 $(x^{(i)}, y^{(i)})$，我们有：
 
@@ -66,7 +66,7 @@ $$
 
     得到最大化的优化目标。
 
--   Cost Function
+- Cost Function
 
     我们构造这样一个 Cost Function $l (t,y): (0,1) \times \{0, 1\} \rightarrow \left[0, +\infty \right)$, 特殊在与它衡量 $h_\theta(x) \in (0,1) $ 与标签 $y \in \{0, 1\}$ 之间的差距：
 

@@ -6,7 +6,7 @@ $$
 
 几个视角下的线性回归：
 
-1.  (对每个参数 $\theta_j$ 的) 梯度下降：
+1. (对每个参数 $\theta_j$ 的) 梯度下降：
 
     $$
     \frac{\partial}{\partial \theta_j} J(\theta) = \displaystyle\sum_{i=1}^{n} \left(h_\theta \left(x^{(i)}\right) - y^{(i)} \right) x_j^{(i)}
@@ -14,10 +14,10 @@ $$
 
     在此基础上就有两种更新的思路：
 
-    -   对全样本进行更新，即批量梯度下降 (Batch Gradient Descent): $\theta_j \leftarrow \theta_j - \alpha \displaystyle\sum_{i=1}^{n} \left(h_\theta \left(x^{(i)}\right) - y^{(i)} \right) x_j^{(i)}$
-    -   对每个样本进行更新，即随机梯度下降 (Stochastic Gradient Descent), 随机选取一个样本 $i$ 进行更新：$\theta_j \leftarrow \theta_j - \alpha \left(h_\theta \left(x^{(i)}\right) - y^{(i)} \right) x_j^{(i)}$
+    - 对全样本进行更新，即批量梯度下降 (Batch Gradient Descent): $\theta_j \leftarrow \theta_j - \alpha \displaystyle\sum_{i=1}^{n} \left(h_\theta \left(x^{(i)}\right) - y^{(i)} \right) x_j^{(i)}$
+    - 对每个样本进行更新，即随机梯度下降 (Stochastic Gradient Descent), 随机选取一个样本 $i$ 进行更新：$\theta_j \leftarrow \theta_j - \alpha \left(h_\theta \left(x^{(i)}\right) - y^{(i)} \right) x_j^{(i)}$
 
-2.  梯度下降实际上并不能得到闭形式 (Closed-form) 解，但是在 Linear Regression 中这样的最优参数显然是能计算得到的：
+2. 梯度下降实际上并不能得到闭形式 (Closed-form) 解，但是在 Linear Regression 中这样的最优参数显然是能计算得到的：
 
     $$
     \begin{aligned}
@@ -36,7 +36,7 @@ $$
 
         在这个时候才发现线代习题的实际意义... 有趣
 
-3.  从极大似然估计的角度考虑：反推 Cost Function
+3. 从极大似然估计的角度考虑：反推 Cost Function
 
     一个蛮有趣的角度，就是推导起来有点麻烦：
 

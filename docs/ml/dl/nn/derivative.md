@@ -73,7 +73,7 @@
         \end{cases}
         $$
 
--   Softmax: $\mathbb{R}^n \rightarrow \mathbb{R}^n$
+- Softmax: $\mathbb{R}^n \rightarrow \mathbb{R}^n$
 
     $$
     \mathbf{f}_i(\mathbf{x}) = \frac{e^{x_i}}{\sum_{j=1}^{n} e^{x_j}}
@@ -111,7 +111,7 @@
 
 ## 损失函数 _Loss Function_
 
--   Mean Squared Error (MSE): $\mathbb{R}^n \times \mathbb{R}^n \rightarrow \mathbb{R}$
+- Mean Squared Error (MSE): $\mathbb{R}^n \times \mathbb{R}^n \rightarrow \mathbb{R}$
 
     $$
     L(\mathbf{y}, \mathbf{\hat{y}}) = \frac{1}{n} \left\lVert \mathbf{y} - \mathbf{\hat{y}} \right\rVert^2
@@ -127,7 +127,7 @@
     \frac{\partial L}{\partial \mathbf{\hat{y}}} = \frac 1n \left(\mathbf{\hat{y}} - \mathbf{y}\right)
     $$
 
--   Cross Entropy: $\mathbb{R}^n \times \mathbb{R}^n \rightarrow \mathbb{R}$
+- Cross Entropy: $\mathbb{R}^n \times \mathbb{R}^n \rightarrow \mathbb{R}$
 
     $$
     L(\mathbf{y}, \mathbf{\hat{y}}) = -\frac{1}{n} \sum_{i=1}^{n} y_i \log(\hat{y}_i)

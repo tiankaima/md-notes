@@ -20,8 +20,8 @@
 
 考虑第 $k$ 层的计算，包含两部分：线性算子 $\mathbf{W}^k \in \mathbb{L}\left(\mathbb{R}^{n_{k-1}}, \mathbb{R}^{n_k}\right)$ 和激活函数 $f^k: \mathbb{R}\rightarrow \mathbb{R}$。
 
--   输入是从上一层 ($k-1$ 层) 拿到的结果 $\mathbf{y}^{k-1} = (y^{k-1}_1, y^{k-1}_2, \ldots, y^{k-1}_{n_{k-1}}) \in \mathbb{R}^{n_{k-1}}$, 输入层记为 $\mathbf{y}^0=\mathbf{x}$。
--   输出则是 $\mathbf{y}^k = (y^k_1, y^k_2, \ldots, y^k_{n_k}) \in \mathbb{R}^{n_k}$。
+- 输入是从上一层 ($k-1$ 层) 拿到的结果 $\mathbf{y}^{k-1} = (y^{k-1}_1, y^{k-1}_2, \ldots, y^{k-1}_{n_{k-1}}) \in \mathbb{R}^{n_{k-1}}$, 输入层记为 $\mathbf{y}^0=\mathbf{x}$。
+- 输出则是 $\mathbf{y}^k = (y^k_1, y^k_2, \ldots, y^k_{n_k}) \in \mathbb{R}^{n_k}$。
 
 即：
 

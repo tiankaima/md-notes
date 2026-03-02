@@ -1,6 +1,6 @@
 # Headscale Setup
 
-> Official Site: https://headscale.net/
+> Official Site: <https://headscale.net/>
 >
 > tl;dr: a self-host version of tailscale, providing more controls but less features
 
@@ -10,7 +10,7 @@
 
 ### Installation
 
-> https://headscale.net/setup/install/official/
+> <https://headscale.net/setup/install/official/>
 
 1. `$ wget *.deb` (in GitHub Release)
 2. `# apt install ./*.deb`
@@ -20,7 +20,7 @@
 
 ### headscale-ui
 
-> https://github.com/gurucomputing/headscale-ui
+> <https://github.com/gurucomputing/headscale-ui>
 
 Pure static site, so no access control is required (all actions are performed at the frontend, including api key storage)
 
@@ -49,7 +49,7 @@ headscale.****.**** {
 
 Now go to `headscale.****.****/web/`, but first create a API key with:
 
-```bash
+```shell
 headscale apikeys create --expiration 999d # or whatever
 ```
 
@@ -79,7 +79,7 @@ To connect to the control plane, use:
 
 > Create a preauth key on the aforementioned headscale-ui page
 
-```bash
+```shell
 tailscale up --login-server <URL> --authkey <KEY>
 ```
 
@@ -148,7 +148,7 @@ Modify `/etc/docker/daemon.json` and add:
 
 You'll need to restart Docker after this, supposing with `systemd` installation:
 
-```bash
+```shell
 sudo systemctl restart docker
 ```
 
@@ -185,15 +185,15 @@ networks:
 
 With `docker run`, use:
 
-```bash
+```shell
 docker run --network inet --ip <IP> ****
 ```
 
 #### Enable IP forwarding
 
-> https://tailscale.com/kb/1019/subnets#connect-to-tailscale-as-a-subnet-router
+> <https://tailscale.com/kb/1019/subnets#connect-to-tailscale-as-a-subnet-router>
 
-```bash
+```shell
 echo 'net.ipv4.ip_forward = 1' | sudo tee -a /etc/sysctl.d/99-tailscale.conf
 echo 'net.ipv6.conf.all.forwarding = 1' | sudo tee -a /etc/sysctl.d/99-tailscale.conf
 sudo sysctl -p /etc/sysctl.d/99-tailscale.conf
@@ -201,7 +201,7 @@ sudo sysctl -p /etc/sysctl.d/99-tailscale.conf
 
 #### Broadcast Route to Headscale
 
-```bash
+```shell
 #!/bin/sh
 
 set -xe
@@ -217,7 +217,7 @@ tailscale up \
 
 Again this could be done with the web page, or with the CLI:
 
-```bash
+```shell
 sudo headscale routes list
 sudo headscale routes enable -r <ID>
 ```

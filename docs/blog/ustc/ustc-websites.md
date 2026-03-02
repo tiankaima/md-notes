@@ -164,8 +164,8 @@ EAP 方法：PEAP
 
 - 镜像站：[https://mirrors.ustc.edu.cn/](https://mirrors.ustc.edu.cn/)
 - 私有 GitLab：
-  - LUG：[https://git.lug.ustc.edu.cn/](https://git.lug.ustc.edu.cn/)
-  - 超算：[https://git.ustc.edu.cn/](https://git.ustc.edu.cn/)
+    - LUG：[https://git.lug.ustc.edu.cn/](https://git.lug.ustc.edu.cn/)
+    - 超算：[https://git.ustc.edu.cn/](https://git.ustc.edu.cn/)
 - VLab：[https://vlab.ustc.edu.cn/](https://vlab.ustc.edu.cn/)
     > 想尝试 Linux，或许 VLab 是个好选择。
 - PXE：[http://pxe.ustc.edu.cn/](http://pxe.ustc.edu.cn/)

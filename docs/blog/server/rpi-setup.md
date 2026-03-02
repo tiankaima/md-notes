@@ -48,7 +48,7 @@
 
 - ~~研究了一圈之后还顺手交了个 [PR](https://github.com/ustclug/mirrorhelp/pull/265)~~
 
-```bash
+```shell
 sudo sed -i 's/deb.debian.org/mirrors.ustc.edu.cn/g' /etc/apt/sources.list
 
 sudo sed \
@@ -60,7 +60,7 @@ sudo sed \
 
 ### Base
 
-```bash
+```shell
 sudo apt update && sudo apt upgrade
 sudo apt install zsh tmux bat gh
 ```
@@ -69,14 +69,14 @@ sudo apt install zsh tmux bat gh
 
 Installation:
 
-```bash
+```shell
 sudo apt install zsh-autosuggestions zsh-syntax-highlighting zsh
 sh -c "$(curl -fsSL https://raw.github.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
 ```
 
 Plugins:
 
-```bash
+```shell
 git clone https://github.com/zsh-users/zsh-autosuggestions.git $ZSH_CUSTOM/plugins/zsh-autosuggestions
 git clone https://github.com/zsh-users/zsh-syntax-highlighting.git $ZSH_CUSTOM/plugins/zsh-syntax-highlighting
 git clone https://github.com/zdharma-continuum/fast-syntax-highlighting.git $ZSH_CUSTOM/plugins/fast-syntax-highlighting
@@ -105,7 +105,7 @@ source $ZSH/oh-my-zsh.sh
 
 Config:
 
-```bash
+```shell
 gh auth login
 ```
 
@@ -144,7 +144,7 @@ gh auth login
 
 直接用下面的命令会快一点：
 
-```bash
+```shell
 curl -sS  https://201.ustclug.org/assets/gitconfig_sample >> ~/.gitconfig
 ```
 
@@ -215,7 +215,7 @@ fi
 
 在另一台机器上：
 
-```bash
+```shell
 ssh root@10.250.206.1
 vim ~/iptables/rules.v4 # edit as below
 sh ~/iptables/apply.sh
@@ -283,11 +283,11 @@ webdav.ustc.server.tiankaima.dev {
 
 ### btrfs
 
-```bash
+```shell
 sudo apt install btrfs-progs
 ```
 
-```bash
+```shell
 sudo mkfs.btrfs -L data /dev/sda
 sudo mkdir /mnt/data
 sudo mount /dev/sda -o compress=zstd /mnt/videodrive

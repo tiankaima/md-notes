@@ -4,16 +4,16 @@
 
 ### 2024-09-06 两个数互素的概率
 
-> Also see https://math.stackexchange.com/questions/64498/probability-that-two-random-numbers-are-coprime-is-frac6-pi2
+> Also see <https://math.stackexchange.com/questions/64498/probability-that-two-random-numbers-are-coprime-is-frac6-pi2>
 >
 > 因为很有趣所以对照翻译一遍。
 
 按照这样的思路考虑两个数互素 (_coprime_) 的概率：
 
--   两个数都是 $2$ 的倍数的概率：$\frac{1}{4}$.
--   两个数都是 $3$ 的倍数的概率：$\frac{1}{9}$.
--   $\cdots$
--   两个数都是 $p$ 的倍数的概率：$\frac{1}{p^2}$.
+- 两个数都是 $2$ 的倍数的概率：$\frac{1}{4}$.
+- 两个数都是 $3$ 的倍数的概率：$\frac{1}{9}$.
+- $\cdots$
+- 两个数都是 $p$ 的倍数的概率：$\frac{1}{p^2}$.
 
 所以两个数互素的概率是：
 

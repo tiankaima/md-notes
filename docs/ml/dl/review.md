@@ -56,7 +56,6 @@ Machine Learning > Neural Network (NN) $\Rightarrow$ Deep Learning (DL)
 - Deep Reinforcement Learning (DRL)
     - Do not have straight foward loss function (do not have full access to the function you are trying to optimize, query them through interaction; state-based enviroment, input depends on previous actions)
 
-
 ### Feature Learning
 
 - Traditional ML Approach:

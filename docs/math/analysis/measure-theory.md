@@ -44,8 +44,8 @@ $$
 
 在这样的平移变换下，我们注意到：
 
--   $\displaystyle\bigcup_{k=1}^{\infty} \mathcal{N}_k \subset [-1,2]$. 这是容易注意到的。
--   $\displaystyle [0,1] \subset \bigcup_{k=1}^{\infty} \mathcal{N}_k$
+- $\displaystyle\bigcup_{k=1}^{\infty} \mathcal{N}_k \subset [-1,2]$. 这是容易注意到的。
+- $\displaystyle [0,1] \subset \bigcup_{k=1}^{\infty} \mathcal{N}_k$
 
     证明需要重新回顾 $\mathcal{N}$ 的构造方式。对于每个 $x\in [0,1]$, 它总是在一个等价类 $\mathcal{E}_\alpha \in \mathcal{A}$ 中的，也总有一个代表元在 $\mathcal{N}$ 中，aka:
 
@@ -69,7 +69,7 @@ $$
 
 这是不可能的，考虑到 $\forall k, \ \ m(\mathcal{N}_k) = m(\mathcal{N})$. 对于以下两种情况都不能满足这个不等式：
 
--   $m(\mathcal{N}) = 0$
--   $m(\mathcal{N}) > 0$
+- $m(\mathcal{N}) = 0$
+- $m(\mathcal{N}) > 0$
 
 得到矛盾，所以 $\mathcal{N}$ 是不可测集。$\quad \square$

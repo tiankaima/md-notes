@@ -12,13 +12,13 @@ $$
 
 > 因为上下限被固定在了 $[0,1]$，因此其实能选取的函数并不多，考虑反三角函数：
 
--   $\arcsin(x)$:
+- $\arcsin(x)$:
 
 $$
 \int_{0}^{1} \frac{1}{\sqrt{1-x^2}} \mathrm{d} x = \arcsin(1) = \frac{\pi}{2}
 $$
 
--   $\arctan(x)$:
+- $\arctan(x)$:
 
 $$
 \int_{-\infty}^{\infty} \frac{1}{1+x^2} \mathrm{d} x = \left[ \arctan(x) \right]_{-\infty}^{\infty} = \pi

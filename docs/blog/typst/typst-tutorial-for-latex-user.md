@@ -67,16 +67,17 @@ LaTeX 使用 `\section` 命令创建章节标题。多级标题分别用 `\subse
 在 Typst 中，使用 列表 并不需要创建「环境」，而采用一种更为轻量的语法。
 只需要在每行开头前，加入连字符 `-`，就可以创建一个无序列表 (`itemize`)：
 
-````typst
+```typst
 To write this list in Typst...
 
-```latex
+``latex
+
 \begin{itemize}
   \item Fast
   \item Flexible
   \item Intuitive
 \end{itemize}
-```
+``
 
 ...just type this:
 
@@ -84,7 +85,7 @@ To write this list in Typst...
 - Flexible
 - Intuitive
 
-````
+```
 
 通过正确的缩进，可以实现列表间嵌套。
 在每项间添加空行，可以得到一个行间距更大的列表。
