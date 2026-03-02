@@ -19,7 +19,7 @@ jobs:
       - name: Page Build
         run: |
           uv sync
-          uv run mkdocs build -v
+          uv run zensical build --config-file zensical.toml
       - name: Upload Page Artifacts
         uses: actions/upload-pages-artifact@v3
         with:

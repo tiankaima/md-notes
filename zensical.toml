@@ -1,0 +1,213 @@
+[project]
+site_name = "Notes/Tiankai Ma"
+site_description = "Tiankai Ma's Notes"
+site_author = "Tiankai Ma"
+site_url = "https://notes.tiankaima.dev"
+repo_name = "tiankaima/md-notes"
+repo_url = "https://github.com/tiankaima/md-notes"
+edit_uri = "https://github.com/tiankaima/md-notes/edit/main/docs/"
+copyright = "Copyright &copy; Tiankai Ma"
+strict = false
+docs_dir = "docs"
+site_dir = "site"
+nav = [
+  { "Welcome" = [
+  "index.md",
+  "index/about.md",
+  "index/test.md",
+] },
+  { "Blog" = [
+  { "C++" = [
+  "blog/cpp/modern-cpp.md",
+] },
+  { "Python" = [
+  { "Package Management [EN]" = "blog/python/packages.md" },
+] },
+  { "Server" = [
+  "blog/server/headscale.md",
+  "blog/server/rpi-setup.md",
+] },
+  { "Typst" = [
+  "blog/typst/typst-tutorial-for-latex-user.md",
+] },
+  { "Terminal" = [
+  "blog/terminal/cheatsheets.md",
+] },
+  { "USTC" = [
+  "blog/ustc/schoolwork-links.md",
+  "blog/ustc/ustc-websites.md",
+  "blog/ustc/xzkd-new-tokens.md",
+] },
+] },
+  { "Math" = [
+  "math/index.md",
+  { "Analysis" = [
+  "math/analysis/calculus.md",
+  "math/analysis/fourier.md",
+  "math/analysis/functional-analysis.md",
+  "math/analysis/measure-theory.md",
+  "math/analysis/attention-is-all-you-need.md",
+  "math/analysis/calculus-of-variations.md",
+] },
+  { "Probability" = [
+  "math/probability/probability.md",
+  "math/probability/stochastic-processes.md",
+] },
+] },
+  { "Machine Learning" = [
+  "ml/index.md",
+  { "Traditional Methods" = [
+  { "Linear Regression" = "ml/traditional/linear-regression.md" },
+  { "Logistic Regression" = "ml/traditional/logistic-regression.md" },
+] },
+  { "Deep Learning" = [
+  { "Review" = "ml/dl/review.md" },
+  { "Neural Network" = [
+  "ml/dl/nn/index.md",
+  { "Backward Propagation" = "ml/dl/nn/bp.md" },
+  { "Latest" = "ml/dl/nn/latest.md" },
+  { "Miscellaneous" = [
+  { "Derivative" = "ml/dl/nn/derivative.md" },
+] },
+] },
+  { "CNN" = [
+  "ml/dl/cnn/index.md",
+  { "History" = "ml/dl/cnn/history.md" },
+] },
+  { "NeRF" = [
+  "ml/dl/nerf/index.md",
+] },
+  { "Gaussian Splatting" = [
+  "ml/dl/gs/index.md",
+  { "3D Gaussian Splatting" = "ml/dl/gs/3d-gs.md" },
+] },
+] },
+] },
+  { "Notebooks" = [
+  { "Overview" = "notebooks/README.md" },
+  { "数学实验 (001108.01)" = "notebooks/2023Fall.001108.01/README.md" },
+  { "符号计算软件 (001361.01)" = "notebooks/2023Fall.001361.01/README.md" },
+  { "微分几何 (Math3009.01)" = "notebooks/2023Fall.Math3009.01/README.md" },
+  { "微分方程引论 (Math3012.01)" = "notebooks/2023Fall.Math3012.01/README.md" },
+] },
+  { "Lab" = [
+  "lab/tutorial.md",
+  "lab/proxy.md",
+  "lab/coder.md",
+  { "Admin" = [
+  "lab/admin/network.md",
+  "lab/admin/services.md",
+  "lab/admin/checklist.md",
+] },
+  { "Maintenance" = [
+  "lab/maintenance/log.md",
+  "lab/maintenance/sssd.md",
+  "lab/maintenance/cleanup.md",
+] },
+] },
+]
+extra_javascript = [
+  "https://cdn.jsdelivr.net/npm/mathjax@3.2.2/es5/tex-mml-chtml.min.js",
+  "https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.9.0/katex.min.js",
+  "javascripts/svg_dark.js",
+]
+extra_css = [
+  "css/extra.css",
+  "https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.9.0/katex.min.css",
+]
+
+[project.extra]
+disqus = "Tiankai Ma"
+copyright = "<a href=\"https://creativecommons.org/licenses/by-sa/4.0/deed.zh\">CC BY-SA 4.0</a>"
+pagetime = "on"
+manifest = "manifest.webmanifest"
+githash = ""
+
+[project.theme]
+variant = "classic"
+language = "zh"
+static_templates = [
+  "404.html",
+]
+include_search_page = false
+search_index_only = true
+features = [
+  "content.action.edit",
+  "content.code.copy",
+  "navigation.indexes",
+  "navigation.expand",
+  "navigation.prune",
+  "navigation.sections",
+  "navigation.tabs",
+  "navigation.tabs.sticky",
+  "navigation.tracking",
+  "search.suggest",
+  "search.highlight",
+  "toc.follow",
+]
+favicon = "favicon.ico"
+
+[[project.theme.palette]]
+media = "(prefers-color-scheme: light)"
+scheme = "default"
+primary = "white"
+accent = "red"
+toggle.icon = "material/weather-sunny"
+toggle.name = "Switch to dark mode"
+
+[[project.theme.palette]]
+media = "(prefers-color-scheme: dark)"
+scheme = "slate"
+primary = "black"
+accent = "blue"
+toggle.icon = "material/weather-night"
+toggle.name = "Switch to light mode"
+
+[project.theme.icon]
+annotation = "material/arrow-right-circle"
+logo = "material/school"
+
+[project.theme.font]
+text = "Fira Sans"
+code = "Fira Mono"
+
+[project.plugins]
+enabled = [
+  "git-revision-date-localized",
+  "glightbox",
+  "redirects",
+]
+
+[project.plugins.redirects]
+redirect_maps = { "blog/xzkd-new-tokens.md" = "blog/ustc/xzkd-new-tokens.md", "blog/terminal/rpi-setup.md" = "blog/server/rpi-setup.md" }
+
+[project.markdown_extensions.abbr]
+[project.markdown_extensions.admonition]
+[project.markdown_extensions.attr_list]
+[project.markdown_extensions.def_list]
+[project.markdown_extensions.footnotes]
+[project.markdown_extensions.md_in_html]
+[project.markdown_extensions.toc]
+permalink = true
+[project.markdown_extensions.pymdownx.arithmatex]
+generic = true
+[project.markdown_extensions.pymdownx.caret]
+[project.markdown_extensions.pymdownx.critic]
+[project.markdown_extensions.pymdownx.details]
+[project.markdown_extensions.pymdownx.emoji]
+emoji_generator = "zensical.extensions.emoji.to_svg"
+[project.markdown_extensions.pymdownx.highlight]
+linenums = true
+anchor_linenums = true
+[project.markdown_extensions.pymdownx.inlinehilite]
+[project.markdown_extensions.pymdownx.keys]
+[project.markdown_extensions.pymdownx.magiclink]
+[project.markdown_extensions.pymdownx.mark]
+[project.markdown_extensions.pymdownx.progressbar]
+[project.markdown_extensions.pymdownx.smartsymbols]
+[project.markdown_extensions.pymdownx.superfences]
+[project.markdown_extensions.pymdownx.tasklist]
+custom_checkbox = true
+[project.markdown_extensions.pymdownx.tilde]
+[project.markdown_extensions.pymdownx.tabbed]
+alternate_style = true

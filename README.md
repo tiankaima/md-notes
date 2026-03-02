@@ -1,6 +1,19 @@
 # tiankaima/md-notes
 
-Mkdocs site used to host notes/summaries of various topics.
+Zensical-powered site used to host notes/summaries of various topics.
+
+## Local development
+
+```bash
+uv sync
+uv run zensical serve
+```
+
+## Build
+
+```bash
+uv run zensical build
+```
 
 Hosted on:
 
