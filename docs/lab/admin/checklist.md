@@ -108,14 +108,6 @@ sudo passwd -d coder
 ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIKTjL65H2yhJPN6PYUp6DQ9wxeQLT1FsC9VPhTaes892
 ```
 
-## Docker Socket 挂载
-
-在 cls1-gateway 上将当前机器的 `/var/run/docker.sock` 挂载到 `/var/run/docker/$HOSTNAME.sock`，以便 Coder 可以访问 Docker，更多[技术细节](./services.md#docker-socket)：
-
-```shell
-sudo systemctl enable --now docker-tunnel@$HOSTNAME
-```
-
 ## APT 换源
 
 <https://mirrors.ustc.edu.cn/help/ubuntu.html>
@@ -400,4 +392,4 @@ sudo fail2ban-client status
 
 ## 监控
 
-参照 [服务总览/监控](./services.md#infra-monitoring) 配置。
+参照 [监控](./monitoring.md) 配置。

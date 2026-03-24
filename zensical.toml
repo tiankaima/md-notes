@@ -96,8 +96,12 @@ nav = [
     "lab/coder.md",
     { "Admin" = [
       "lab/admin/network.md",
-      "lab/admin/services.md",
       "lab/admin/checklist.md",
+      { "服务" = [
+        "lab/admin/services/index.md",
+        "lab/admin/services/monitoring.md",
+        "lab/admin/services/archive.md",
+      ] },
     ] },
     { "Maintenance" = [
       "lab/maintenance/log.md",
@@ -149,6 +153,7 @@ search_index_only = true
 features = [
   "content.action.edit",
   "content.action.view",
+  "content.code.annotate",
   "content.code.copy",
   "content.tabs.link",
   "content.tooltips",

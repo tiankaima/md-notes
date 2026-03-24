@@ -37,7 +37,7 @@
 
             默认镜像中包含很多个性化的 zsh/tmux 设置，如果不习惯的话可以通过 `sudo chsh -s /bin/bash` 切换到 bash，退出当前的 shell，重新登录（连接）即可。
 
-    - Host：选择一台服务即可，可在[服务总览](./admin/services.md)中的监控部分查看各台服务器的使用情况。
+    - Host：选择一台服务即可，可在[监控](./admin/services/monitoring.md)中查看各台服务器的使用情况。
 
 4. 点击 Create Workspace，稍等片刻，Workspace 就创建好了：
 
