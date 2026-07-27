@@ -1,0 +1,133 @@
+#!/usr/bin/env bash
+set -u
+
+MAIL_TO=${MAIL_TO:-root}
+WARN_PCT=${WARN_PCT:-90}
+CRIT_PCT=${CRIT_PCT:-95}
+HOST=$(hostname -s 2>/dev/null || hostname)
+SEND_MAIL=1
+
+if [ "${1:-}" = "--no-mail" ]; then
+  SEND_MAIL=0
+fi
+
+problems=()
+
+add_problem() {
+  problems+=("$1")
+}
+
+check_mounts() {
+  if [ ! -r /etc/fstab ]; then
+    printf 'MOUNT CONFIG: /etc/fstab is not readable\n'
+    return
+  fi
+
+  awk '
+    NF && $1 !~ /^#/ && $2 != "none" && $3 != "swap" {
+      print $1 "\t" $2 "\t" $3 "\t" $4
+    }
+  ' /etc/fstab | while IFS=$'\t' read -r src target fstype options; do
+    case ",${options}," in
+      *,noauto,*) continue ;;
+    esac
+
+    if ! findmnt --mountpoint "$target" >/dev/null 2>&1; then
+      printf 'MOUNT MISSING: %s source=%s type=%s options=%s\n' \
+        "$target" "$src" "$fstype" "$options"
+    fi
+  done
+}
+
+check_disk_usage() {
+  declare -A seen_fs=()
+
+  findmnt -rn -o TARGET,FSTYPE,SOURCE | while read -r target fstype source; do
+    case "$fstype" in
+      autofs|binfmt_misc|bpf|cgroup|cgroup2|configfs|debugfs|devpts|devtmpfs|efivarfs|fusectl|hugetlbfs|mqueue|nfs|nfs4|nsfs|proc|pstore|rpc_pipefs|securityfs|squashfs|sysfs|tmpfs|tracefs)
+        continue
+        ;;
+    esac
+
+    df_line=$(df -P "$target" 2>/dev/null | awk 'NR == 2 {print}')
+    [ -n "$df_line" ] || continue
+
+    df_source=$(awk '{print $1}' <<<"$df_line")
+    [ -n "$df_source" ] || df_source=$source
+    if [ -n "${seen_fs[$df_source]:-}" ]; then
+      continue
+    fi
+    seen_fs[$df_source]=1
+
+    usage=$(awk '{gsub(/%/, "", $5); print $5}' <<<"$df_line")
+    [ -n "$usage" ] || continue
+    [[ "$usage" =~ ^[0-9]+$ ]] || continue
+
+    if [ "$usage" -ge "$CRIT_PCT" ]; then
+      printf 'DISK CRITICAL: %s usage=%s%% threshold=%s%% source=%s type=%s\n' \
+        "$target" "$usage" "$CRIT_PCT" "$source" "$fstype"
+    elif [ "$usage" -ge "$WARN_PCT" ]; then
+      printf 'DISK WARNING: %s usage=%s%% threshold=%s%% source=%s type=%s\n' \
+        "$target" "$usage" "$WARN_PCT" "$source" "$fstype"
+    fi
+  done
+}
+
+check_zfs() {
+  command -v zpool >/dev/null 2>&1 || return
+
+  pools=$(zpool list -H -o name 2>/dev/null || true)
+  [ -n "$pools" ] || return
+
+  status=$(zpool status -x 2>&1)
+  if ! printf '%s\n' "$status" | grep -Eq '^all pools are healthy$'; then
+    printf 'ZFS HEALTH: zpool status -x reported a problem\n%s\n' "$status"
+  fi
+}
+
+while IFS= read -r line; do
+  [ -n "$line" ] && add_problem "$line"
+done < <(check_mounts)
+
+while IFS= read -r line; do
+  [ -n "$line" ] && add_problem "$line"
+done < <(check_disk_usage)
+
+zfs_output=$(check_zfs)
+if [ -n "$zfs_output" ]; then
+  add_problem "$zfs_output"
+fi
+
+if [ "${#problems[@]}" -eq 0 ]; then
+  exit 0
+fi
+
+{
+  printf 'Storage alerts on %s\n\n' "$HOST"
+  printf 'Thresholds: warning=%s%% critical=%s%%\n\n' "$WARN_PCT" "$CRIT_PCT"
+  printf '%s\n' "${problems[@]}"
+} > /tmp/cluster-storage-alerts.$$
+
+cat /tmp/cluster-storage-alerts.$$
+
+if [ "$SEND_MAIL" -eq 1 ]; then
+  if command -v mail >/dev/null 2>&1; then
+    mail -s "Storage alert on $HOST" "$MAIL_TO" < /tmp/cluster-storage-alerts.$$
+  elif command -v sendmail >/dev/null 2>&1; then
+    {
+      printf 'To: %s\n' "$MAIL_TO"
+      printf 'Subject: Storage alert on %s\n\n' "$HOST"
+      cat /tmp/cluster-storage-alerts.$$
+    } | sendmail -t
+  else
+    rm -f /tmp/cluster-storage-alerts.$$
+    echo "No mail or sendmail command found" >&2
+    exit 2
+  fi
+fi
+
+rm -f /tmp/cluster-storage-alerts.$$
+if [ "$SEND_MAIL" -eq 0 ]; then
+  exit 1
+fi
+exit 0

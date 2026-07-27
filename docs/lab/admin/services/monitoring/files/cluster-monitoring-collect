@@ -1,0 +1,284 @@
+#!/usr/bin/env bash
+set -u
+
+OUTPUT_DIR=/var/lib/node_exporter/textfile_collector
+OUTPUT_FILE=${OUTPUT_DIR}/cluster-monitoring.prom
+UNIT_FILE=/etc/cluster-monitoring/expected-units
+SETTINGS_FILE=/etc/cluster-monitoring/collectors.conf
+
+COLLECT_SLURM_CONTROLLER=0
+COLLECT_BEEGFS_HEALTH=0
+COLLECT_BEEGFS_CLIENT=0
+BEEGFS_MOUNT=/data/cls1-beegfs
+
+if [ -r "$SETTINGS_FILE" ]; then
+  # The file is root-owned and generated from boolean inventory values.
+  # shellcheck source=/dev/null
+  source "$SETTINGS_FILE"
+fi
+
+mkdir -p "$OUTPUT_DIR"
+tmp_file=$(mktemp "${OUTPUT_DIR}/cluster-monitoring.prom.XXXXXX")
+trap 'rm -f "$tmp_file"' EXIT
+
+collect_systemd() {
+  local unit load_state active_state present active
+
+  if [ ! -r "$UNIT_FILE" ]; then
+    printf 'cluster_monitoring_collection_success{collector="systemd"} 0\n'
+    return
+  fi
+
+  while IFS= read -r unit; do
+    [ -n "$unit" ] || continue
+    load_state=$(systemctl show "$unit" --property=LoadState --value 2>/dev/null)
+    active_state=$(systemctl show "$unit" --property=ActiveState --value 2>/dev/null)
+    present=0
+    active=0
+    [ "$load_state" = loaded ] && present=1
+    [ "$active_state" = active ] && active=1
+    printf 'cluster_systemd_unit_present{unit="%s"} %s\n' "$unit" "$present"
+    printf 'cluster_systemd_unit_active{unit="%s"} %s\n' "$unit" "$active"
+    if [ "$present" -eq 1 ] && [ "$active" -eq 1 ]; then
+      printf 'cluster_systemd_unit_contract_ok{unit="%s"} 1\n' "$unit"
+    else
+      printf 'cluster_systemd_unit_contract_ok{unit="%s"} 0\n' "$unit"
+    fi
+  done < "$UNIT_FILE"
+
+  printf 'cluster_monitoring_collection_success{collector="systemd"} 1\n'
+}
+
+collect_host_policy() {
+  local ntp_synchronized=0 apt_result_success=0
+  local last_trigger last_trigger_timestamp=0
+
+  if [ "$(timedatectl show --property=NTPSynchronized --value 2>/dev/null)" = yes ]; then
+    ntp_synchronized=1
+  fi
+
+  if [ "$(systemctl show apt-daily-upgrade.service --property=Result --value 2>/dev/null)" = success ]; then
+    apt_result_success=1
+  fi
+
+  last_trigger=$(systemctl show apt-daily-upgrade.timer \
+    --property=LastTriggerUSec --value 2>/dev/null)
+  if [ -n "$last_trigger" ] && [ "$last_trigger" != n/a ]; then
+    last_trigger_timestamp=$(date --date="$last_trigger" +%s 2>/dev/null || printf 0)
+  fi
+
+  printf 'cluster_ntp_synchronized %s\n' "$ntp_synchronized"
+  printf 'cluster_apt_daily_upgrade_last_result_success %s\n' \
+    "$apt_result_success"
+  printf 'cluster_apt_daily_upgrade_last_trigger_timestamp_seconds %s\n' \
+    "$last_trigger_timestamp"
+  printf 'cluster_monitoring_collection_success{collector="host_policy"} 1\n'
+}
+
+collect_slurm() {
+  local ping_success=0 nodes queue outcomes accounting_start
+  local node partition state reason escaped_reason
+
+  [ "$COLLECT_SLURM_CONTROLLER" = 1 ] || return
+
+  if timeout 10 /usr/bin/scontrol ping 2>/dev/null | grep -q 'is UP'; then
+    ping_success=1
+  fi
+  printf 'cluster_slurm_controller_ping_success %s\n' "$ping_success"
+
+  if ! nodes=$(timeout 10 /usr/bin/sinfo -N -h -o '%N|%P|%T|%E' 2>/dev/null); then
+    printf 'cluster_monitoring_collection_success{collector="slurm"} 0\n'
+    return
+  fi
+
+  while IFS='|' read -r node partition state reason; do
+    [ -n "$node" ] || continue
+    partition=${partition//\*/}
+    state=${state//\*/}
+    escaped_reason=${reason//\\/\\\\}
+    escaped_reason=${escaped_reason//\"/\\\"}
+    printf 'cluster_slurm_node_state{node="%s",partition="%s",state="%s",reason="%s"} 1\n' \
+      "$node" "$partition" "$state" "$escaped_reason"
+  done < <(printf '%s\n' "$nodes" | sort -u)
+
+  if ! queue=$(timeout 10 /usr/bin/squeue --json 2>/dev/null); then
+    printf 'cluster_monitoring_collection_success{collector="slurm"} 0\n'
+    return
+  fi
+
+  {
+    printf '%s\n' "$nodes" \
+      | awk -F'|' '{gsub(/\*/, "", $2); print "P\t" $2}' \
+      | sort -u
+    printf '%s\n' "$queue" | /usr/bin/jq -r '
+      .jobs[] | [
+        "J",
+        (.user_name // "unknown"),
+        (.job_state[0] // "UNKNOWN"),
+        (.partition // "unknown"),
+        (.cpus.number // 0),
+        (.node_count.number // 0),
+        (.tres_per_node // ""),
+        (.tres_per_job // ""),
+        (.submit_time.number // 0)
+      ] | @tsv'
+  } | awk -F '\t' -v now="$(date +%s)" '
+    function gpu_count(value,    fields, parts, count, i, n, part_count) {
+      count = 0
+      n = split(value, fields, ",")
+      for (i = 1; i <= n; i++) {
+        if (fields[i] ~ /gres\/gpu/) {
+          part_count = split(fields[i], parts, ":")
+          if (parts[part_count] ~ /^[0-9]+$/) {
+            count += parts[part_count]
+          }
+        }
+      }
+      return count
+    }
+    $1 == "P" {
+      jobs[$2 SUBSEP "RUNNING"] += 0
+      jobs[$2 SUBSEP "PENDING"] += 0
+      cpus[$2 SUBSEP "RUNNING"] += 0
+      cpus[$2 SUBSEP "PENDING"] += 0
+      gpus[$2 SUBSEP "RUNNING"] += 0
+      gpus[$2 SUBSEP "PENDING"] += 0
+      next
+    }
+    $1 == "J" {
+      user = $2
+      state = $3
+      partition = $4
+      job_key = partition SUBSEP state
+      user_key = user SUBSEP partition SUBSEP state
+      job_gpus = gpu_count($7) * $6 + gpu_count($8)
+      jobs[job_key]++
+      cpus[job_key] += $5
+      gpus[job_key] += job_gpus
+      user_jobs[user_key]++
+      user_cpus[user_key] += $5
+      user_gpus[user_key] += job_gpus
+      if (state == "PENDING" && $9 > 0) {
+        age = now - $9
+        pending_key = user SUBSEP partition
+        if (age > oldest_pending[pending_key]) {
+          oldest_pending[pending_key] = age
+        }
+      }
+    }
+    END {
+      for (key in jobs) {
+        split(key, labels, SUBSEP)
+        printf "cluster_slurm_jobs{partition=\"%s\",state=\"%s\"} %d\n", labels[1], labels[2], jobs[key]
+        printf "cluster_slurm_job_cpus{partition=\"%s\",state=\"%s\"} %d\n", labels[1], labels[2], cpus[key]
+        printf "cluster_slurm_job_gpus{partition=\"%s\",state=\"%s\"} %d\n", labels[1], labels[2], gpus[key]
+      }
+      for (key in user_jobs) {
+        split(key, labels, SUBSEP)
+        printf "cluster_slurm_user_jobs{user=\"%s\",partition=\"%s\",state=\"%s\"} %d\n", labels[1], labels[2], labels[3], user_jobs[key]
+        printf "cluster_slurm_user_cpus{user=\"%s\",partition=\"%s\",state=\"%s\"} %d\n", labels[1], labels[2], labels[3], user_cpus[key]
+        printf "cluster_slurm_user_gpus{user=\"%s\",partition=\"%s\",state=\"%s\"} %d\n", labels[1], labels[2], labels[3], user_gpus[key]
+      }
+      for (key in oldest_pending) {
+        split(key, labels, SUBSEP)
+        printf "cluster_slurm_user_oldest_pending_age_seconds{user=\"%s\",partition=\"%s\"} %d\n", labels[1], labels[2], oldest_pending[key]
+      }
+    }' | sort
+
+  printf '%s\n' "$nodes" | awk -F'|' '
+    {
+      gsub(/\*/, "", $2)
+      gsub(/\*/, "", $3)
+      nodes[$2 SUBSEP $3]++
+    }
+    END {
+      for (key in nodes) {
+        split(key, labels, SUBSEP)
+        printf "cluster_slurm_partition_nodes{partition=\"%s\",state=\"%s\"} %d\n", labels[1], labels[2], nodes[key]
+      }
+    }' | sort
+
+  accounting_start=$(date --date='1 hour ago' +%FT%T)
+  if outcomes=$(timeout 10 /usr/bin/sacct -X -S "$accounting_start" \
+    --noheader --parsable2 --format=State 2>/dev/null); then
+    printf '%s\n' "$outcomes" | awk -F'|' '
+      BEGIN {
+        states["COMPLETED"] = 0
+        states["FAILED"] = 0
+        states["TIMEOUT"] = 0
+        states["OUT_OF_MEMORY"] = 0
+        states["NODE_FAIL"] = 0
+        states["BOOT_FAIL"] = 0
+        states["CANCELLED"] = 0
+      }
+      {
+        state = $1
+        sub(/ .*/, "", state)
+        sub(/\+.*/, "", state)
+        if (state in states) {
+          states[state]++
+        }
+      }
+      END {
+        for (state in states) {
+          printf "cluster_slurm_job_outcomes_1h{state=\"%s\"} %d\n", state, states[state]
+        }
+      }' | sort
+    printf 'cluster_monitoring_collection_success{collector="slurm_accounting"} 1\n'
+  else
+    printf 'cluster_monitoring_collection_success{collector="slurm_accounting"} 0\n'
+  fi
+  printf 'cluster_monitoring_collection_success{collector="slurm"} 1\n'
+}
+
+collect_beegfs() {
+  local start_ns end_ns duration_ms health_success=0
+  local mounted=0 invalidation=0 config_count enabled_count
+
+  if [ "$COLLECT_BEEGFS_HEALTH" = 1 ]; then
+    start_ns=$(date +%s%N)
+    if timeout 30 /usr/sbin/beegfs health check --no-hints \
+      >/dev/null 2>&1; then
+      health_success=1
+    fi
+    end_ns=$(date +%s%N)
+    duration_ms=$(((end_ns - start_ns) / 1000000))
+    printf 'cluster_beegfs_health_check_success %s\n' "$health_success"
+    printf 'cluster_beegfs_health_check_duration_seconds %s.%03d\n' \
+      "$((duration_ms / 1000))" "$((duration_ms % 1000))"
+  fi
+
+  [ "$COLLECT_BEEGFS_CLIENT" = 1 ] || return
+
+  findmnt --mountpoint "$BEEGFS_MOUNT" >/dev/null 2>&1 && mounted=1
+  config_count=$(find /proc/fs/beegfs -mindepth 2 -maxdepth 2 \
+    -name config -type f 2>/dev/null | wc -l)
+  enabled_count=$(grep -h '^sysRemoteInvalEnabled' \
+    /proc/fs/beegfs/*/config 2>/dev/null \
+    | awk -F= '$2 ~ /1/ {count++} END {print count + 0}')
+  if [ "$config_count" -gt 0 ] && [ "$enabled_count" -eq "$config_count" ]; then
+    invalidation=1
+  fi
+
+  printf 'cluster_beegfs_client_mounted %s\n' "$mounted"
+  printf 'cluster_beegfs_remote_invalidation_enabled %s\n' "$invalidation"
+  if [ "$mounted" -eq 1 ] && [ "$invalidation" -eq 1 ]; then
+    printf 'cluster_beegfs_client_contract_ok 1\n'
+  else
+    printf 'cluster_beegfs_client_contract_ok 0\n'
+  fi
+  printf 'cluster_monitoring_collection_success{collector="beegfs"} 1\n'
+}
+
+{
+  printf '# HELP cluster_monitoring_collection_success Whether collection succeeded.\n'
+  printf '# TYPE cluster_monitoring_collection_success gauge\n'
+  collect_systemd
+  collect_host_policy
+  collect_slurm
+  collect_beegfs
+} > "$tmp_file"
+
+chmod 0644 "$tmp_file"
+mv "$tmp_file" "$OUTPUT_FILE"
+trap - EXIT

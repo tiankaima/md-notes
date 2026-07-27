@@ -1,0 +1,20 @@
+[Unit]
+Description=Collect persistent cluster journal event counters
+After=systemd-journald.service
+
+[Service]
+Type=oneshot
+ExecStart=/usr/local/sbin/cluster-journal-events
+User=root
+Group=root
+UMask=0022
+Nice=10
+IOSchedulingClass=idle
+CPUWeight=10
+TimeoutStartSec=60
+NoNewPrivileges=true
+ProtectHome=true
+ProtectSystem=strict
+PrivateTmp=true
+ReadWritePaths=/var/lib/cluster-monitoring /var/lib/node_exporter/textfile_collector
+RestrictAddressFamilies=AF_UNIX
