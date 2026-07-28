@@ -11,7 +11,7 @@ dependencies = [
     "mkdocs-glightbox>=0.5.1",
     "mkdocs-material>=9.6.20",
     "mkdocs-redirects>=1.2.2",
-    "pymdown-extensions>=10.16.1",
+    "pymdown-extensions>=10.21.3",
     "python-markdown-document-offsets-injection-extension>=0.5.13",
     "zensical>=0.0.24",
 ]
