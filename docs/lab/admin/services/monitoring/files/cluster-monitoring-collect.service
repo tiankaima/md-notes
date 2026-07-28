@@ -1,0 +1,20 @@
+[Unit]
+Description=Collect cluster service metrics for node-exporter
+After=network-online.target
+
+[Service]
+Type=oneshot
+ExecStart=/usr/local/sbin/cluster-monitoring-collect
+User=root
+Group=root
+UMask=0022
+Nice=10
+IOSchedulingClass=idle
+CPUWeight=10
+TimeoutStartSec=60
+NoNewPrivileges=true
+ProtectHome=true
+ProtectSystem=strict
+PrivateTmp=true
+ReadWritePaths=/var/lib/node_exporter/textfile_collector
+RestrictAddressFamilies=AF_UNIX AF_INET AF_INET6

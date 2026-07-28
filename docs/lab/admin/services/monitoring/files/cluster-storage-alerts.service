@@ -1,0 +1,6 @@
+[Unit]
+Description=Cluster storage alert check
+
+[Service]
+Type=oneshot
+ExecStart=/usr/local/sbin/cluster-storage-alerts

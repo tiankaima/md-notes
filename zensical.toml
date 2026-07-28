@@ -93,20 +93,48 @@ nav = [
   { "Lab" = [
     "lab/tutorial.md",
     "lab/proxy.md",
-    "lab/coder.md",
     { "Admin" = [
-      "lab/admin/network.md",
-      "lab/admin/checklist.md",
+      "lab/admin/index.md",
+      { "服务器" = [
+        "lab/admin/server/checklist.md",
+        "lab/admin/server/setup.md",
+        "lab/admin/server/maintenance.md",
+      ] },
+      { "网络" = [
+        "lab/admin/network/topology.md",
+        "lab/admin/network/setup.md",
+        "lab/admin/network/maintenance.md",
+      ] },
       { "服务" = [
         "lab/admin/services/index.md",
-        "lab/admin/services/monitoring.md",
-        "lab/admin/services/archive.md",
+        { "systemd-nspawn" = "lab/admin/services/systemd-nspawn/index.md" },
+        { "监控" = "lab/admin/services/monitoring/index.md" },
+        { "Postfix" = "lab/admin/services/postfix/index.md" },
+        { "Slurm" = "lab/admin/services/slurm/index.md" },
+        { "SSSD" = "lab/admin/services/sssd/index.md" },
+        { "LLDAP" = "lab/admin/services/lldap/index.md" },
+        { "NFS" = "lab/admin/services/nfs/index.md" },
+        { "BeeGFS" = "lab/admin/services/beegfs/index.md" },
+        { "ZFS" = "lab/admin/services/zfs/index.md" },
+        { "DERP" = "lab/admin/services/derp/index.md" },
+        { "Headscale" = "lab/admin/services/headscale/index.md" },
+        { "Caddy" = "lab/admin/services/caddy/index.md" },
+        { "NVIDIA Container Toolkit" = "lab/admin/services/nvidia-container-toolkit/index.md" },
+        { "NVIDIA Driver" = "lab/admin/services/nvidia-driver/index.md" },
+        { "Docker" = "lab/admin/services/docker/index.md" },
+        { "DOCA / RDMA" = "lab/admin/services/doca/index.md" },
+        { "DNS" = "lab/admin/services/dns/index.md" },
+      ] },
+      { "归档" = [
+        "lab/admin/archive/index.md",
+        "lab/admin/archive/coder.md",
+        "lab/admin/archive/docker-socket.md",
+        "lab/admin/archive/wireguard.md",
+        "lab/admin/archive/derp-systemd.md",
       ] },
     ] },
     { "Maintenance" = [
       "lab/maintenance/log.md",
-      "lab/maintenance/sssd.md",
-      "lab/maintenance/cleanup.md",
     ] },
   ] },
 ]
@@ -204,7 +232,7 @@ code = "Fira Mono"
 enabled = ["git-revision-date-localized", "glightbox", "redirects"]
 
 [project.plugins.redirects]
-redirect_maps = { "blog/xzkd-new-tokens.md" = "blog/ustc/xzkd-new-tokens.md", "blog/terminal/rpi-setup.md" = "blog/server/rpi-setup.md" }
+redirect_maps = { "blog/xzkd-new-tokens.md" = "blog/ustc/xzkd-new-tokens.md", "blog/terminal/rpi-setup.md" = "blog/server/rpi-setup.md", "lab/coder.md" = "lab/admin/archive/coder.md", "lab/admin/checklist.md" = "lab/admin/server/checklist.md", "lab/admin/network.md" = "lab/admin/network/topology.md", "lab/admin/network/index.md" = "lab/admin/network/topology.md", "lab/admin/network/history.md" = "lab/admin/archive/wireguard.md", "lab/admin/server/index.md" = "lab/admin/server/setup.md", "lab/admin/services/headscale/history.md" = "lab/admin/archive/derp-systemd.md", "lab/admin/services/login/index.md" = "lab/admin/services/systemd-nspawn/index.md", "lab/admin/services/nvidia/index.md" = "lab/admin/services/nvidia-driver/index.md", "lab/admin/services/monitoring.md" = "lab/admin/services/monitoring/index.md", "lab/admin/services/archive.md" = "lab/admin/archive/index.md", "lab/admin/archive/headscale.md" = "lab/admin/archive/derp-systemd.md", "lab/admin/archive/network.md" = "lab/admin/archive/wireguard.md", "lab/maintenance/sssd.md" = "lab/admin/services/sssd/index.md", "lab/maintenance/cleanup.md" = "lab/admin/server/maintenance.md" }
 
 [project.markdown_extensions.abbr]
 [project.markdown_extensions.admonition]

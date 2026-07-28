@@ -1,0 +1,134 @@
+#!/usr/bin/env bash
+set -u
+
+OUTPUT_DIR=/var/lib/node_exporter/textfile_collector
+OUTPUT_FILE=${OUTPUT_DIR}/cluster-journal-events.prom
+STATE_DIR=/var/lib/cluster-monitoring
+STATE_FILE=${STATE_DIR}/journal-events.state
+CURSOR_FILE=${STATE_DIR}/journal-events.cursor
+
+EVENTS=(
+  beegfs_database_lock
+  container_runtime_unclean
+  gpu_cdi_failure
+  gpu_driver_mismatch
+  gpu_xid
+  kernel_hung_task
+  oom_kill
+  pcie_corrected
+  pcie_uncorrected
+  rdma_error
+  slurm_service_failure
+  sssd_tls_failure
+  storage_io_error
+  unattended_upgrade_failure
+)
+
+declare -A counts
+for event in "${EVENTS[@]}"; do
+  counts["$event"]=0
+done
+
+if [ -r "$STATE_FILE" ]; then
+  while IFS='=' read -r event count; do
+    if [[ -v "counts[$event]" ]] && [[ "$count" =~ ^[0-9]+$ ]]; then
+      counts["$event"]=$count
+    fi
+  done < "$STATE_FILE"
+fi
+
+mkdir -p "$OUTPUT_DIR" "$STATE_DIR"
+output_tmp=$(mktemp "${OUTPUT_DIR}/cluster-journal-events.prom.XXXXXX")
+state_tmp=$(mktemp "${STATE_DIR}/journal-events.state.XXXXXX")
+journal_tmp=$(mktemp "${STATE_DIR}/journal-events.journal.XXXXXX")
+trap 'rm -f "$output_tmp" "$state_tmp" "$journal_tmp"' EXIT
+
+write_metrics() {
+  local success=$1 event
+
+  {
+    printf '# HELP cluster_journal_event_collection_success Whether journal event collection succeeded.\n'
+    printf '# TYPE cluster_journal_event_collection_success gauge\n'
+    printf 'cluster_journal_event_collection_success %s\n' "$success"
+    printf '# HELP cluster_journal_events_total Kernel and service events observed since collector installation.\n'
+    printf '# TYPE cluster_journal_events_total counter\n'
+    for event in "${EVENTS[@]}"; do
+      printf 'cluster_journal_events_total{event="%s"} %s\n' \
+        "$event" "${counts[$event]}"
+    done
+  } > "$output_tmp"
+
+  chmod 0644 "$output_tmp"
+  mv "$output_tmp" "$OUTPUT_FILE"
+}
+
+if [ ! -s "$CURSOR_FILE" ]; then
+  cursor=$(journalctl -n 0 --show-cursor --no-pager 2>/dev/null \
+    | sed -n 's/^-- cursor: //p' | tail -n 1)
+  if [ -z "$cursor" ]; then
+    write_metrics 0
+    exit 0
+  fi
+  printf '%s\n' "$cursor" > "$CURSOR_FILE"
+  chmod 0600 "$CURSOR_FILE"
+  write_metrics 1
+  exit 0
+fi
+
+cursor=$(cat "$CURSOR_FILE")
+if ! journalctl --after-cursor="$cursor" --show-cursor --no-pager -o json \
+  > "$journal_tmp" 2>/dev/null; then
+  write_metrics 0
+  exit 0
+fi
+
+next_cursor=$(sed -n 's/^-- cursor: //p' "$journal_tmp" | tail -n 1)
+if [ -z "$next_cursor" ]; then
+  write_metrics 0
+  exit 0
+fi
+
+shopt -s nocasematch
+while IFS= read -r message; do
+  if [[ "$message" =~ NVRM:.*Xid ]]; then
+    ((counts[gpu_xid]++)) || true
+  elif [[ "$message" =~ NVRM:.*API\ mismatch ]]; then
+    ((counts[gpu_driver_mismatch]++)) || true
+  elif [[ "$message" =~ nvidia-cdi-refresh.*Failed ]]; then
+    ((counts[gpu_cdi_failure]++)) || true
+  elif [[ "$message" =~ (Out\ of\ memory:.*Killed\ process|Memory\ cgroup\ out\ of\ memory) ]]; then
+    ((counts[oom_kill]++)) || true
+  elif [[ "$message" =~ (Buffer\ I/O\ error|JBD2:.*I/O\ error|blk_update_request:.*I/O\ error|EXT4-fs.*error|XFS.*(corruption|I/O\ error)|nvme.*I/O\ error) ]]; then
+    ((counts[storage_io_error]++)) || true
+  elif [[ "$message" =~ (blocked\ for\ more\ than|soft\ lockup|hard\ LOCKUP) ]]; then
+    ((counts[kernel_hung_task]++)) || true
+  elif [[ "$message" =~ (RDMA_CM_EVENT_.*ERROR|Unknown\ symbol\ rdma_|disagrees\ about\ version\ of\ symbol.*rdma) ]]; then
+    ((counts[rdma_error]++)) || true
+  elif [[ "$message" =~ beegfs.*database\ is\ locked ]]; then
+    ((counts[beegfs_database_lock]++)) || true
+  elif [[ "$message" =~ (AER:.*Uncorrected|severity:.*(Uncorrected|Fatal)|EDAC.*(UE|uncorrected)) ]]; then
+    ((counts[pcie_uncorrected]++)) || true
+  elif [[ "$message" =~ (AER:.*Corrected|severity:.*Corrected|EDAC.*(CE|corrected)) ]]; then
+    ((counts[pcie_corrected]++)) || true
+  elif [[ "$message" =~ (slurm(ctld|d|dbd)\.service:.*Failed\ with\ result|Failed\ to\ start\ slurm(ctld|d|dbd)\.service) ]]; then
+    ((counts[slurm_service_failure]++)) || true
+  elif [[ "$message" =~ Could\ not\ start\ TLS\ encryption ]]; then
+    ((counts[sssd_tls_failure]++)) || true
+  elif [[ "$message" =~ (unattended-upgrade|apt-daily-upgrade).*(ERROR|failed) ]]; then
+    ((counts[unattended_upgrade_failure]++)) || true
+  elif [[ "$message" =~ containerd.service:.*left-over\ process ]]; then
+    ((counts[container_runtime_unclean]++)) || true
+  fi
+done < <(sed '/^-- cursor:/d' "$journal_tmp" \
+  | jq -r 'select(type == "object") | .MESSAGE // empty')
+
+for event in "${EVENTS[@]}"; do
+  printf '%s=%s\n' "$event" "${counts[$event]}"
+done > "$state_tmp"
+chmod 0600 "$state_tmp"
+mv "$state_tmp" "$STATE_FILE"
+printf '%s\n' "$next_cursor" > "$CURSOR_FILE"
+chmod 0600 "$CURSOR_FILE"
+
+write_metrics 1
+trap - EXIT

@@ -1,5 +1,8 @@
 # 维护记录
 
+当前配置见 [Slurm](../admin/services/slurm/)、[BeeGFS](../admin/services/beegfs/)、
+[NFS](../admin/services/nfs/)、[Docker](../admin/services/docker/)和[监控](../admin/services/monitoring/)。
+
 ## 2026-04-20
 
 - 16:52 故障报告
